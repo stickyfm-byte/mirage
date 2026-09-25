@@ -5,8 +5,8 @@ Single-page Mirage Productions website.
 ## Included
 
 - Supplied Mirage logo
-- Minecraft themed underwater background with subtle caustics, reefs, bubbles and fish
-- Live player count for miragemultiverse.datho.st
+- Light-to-dark blue gradient background
+- Live player count for mc.miragesmp.org
 - Four YouTube video previews
 - Four creator cards with independent 3D Minecraft skin viewers
 - Automatic skin rotation
@@ -19,7 +19,7 @@ Single-page Mirage Productions website.
 
 ## Skin loading
 
-The creator cards first request the current skin texture from Ashcon's public Mojang profile API. If that request is unavailable, the viewer falls back to mc-heads.net.
+For creators whose Minecraft UUID is on file, the viewer requests the skin by UUID first (mc-heads.net, then minotar.net, then crafatar.com), since UUID lookups skip each host's username->UUID cache and stay correct even right after a name change. It then falls back to the same three hosts by username for creators without a stored UUID, and shows a "Skin unavailable" placeholder only if every source fails.
 
 ## Run locally
 
