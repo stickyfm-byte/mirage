@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mirage Productions creates Minecraft events, videos and community experiences.">
+  <title>Mirage Productions</title>
+  <link rel="icon" href="assets/mirage-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ocean" aria-hidden="true">
+    <div class="caustic c1"></div><div class="caustic c2"></div><div class="caustic c3"></div>
+    <div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="bubble b4"></div>
+    <div class="fish fish1">◈</div><div class="fish fish2">◈</div>
+    <div class="reef reef-left"></div><div class="reef reef-right"></div>
+    <div class="seabed"></div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#top">
+      <img src="assets/mirage-logo.png" alt="Mirage logo">
+      <span><b>Mirage</b><small>Productions</small></span>
+    </a>
+    <nav>
+      <a href="#videos">Videos</a>
+      <a href="#creators">Creators</a>
+      <a href="#apply">Join</a>
+      <a href="#info">Info</a>
+    </nav>
+    <a class="discord" href="https://discord.gg/3mWSrqFJf6" target="_blank" rel="noopener">Discord ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="tag">MIRAGE PRODUCTIONS</span>
+        <h1>Mirage<br><span>Productions.</span></h1>
+        <p>Original Minecraft events, videos and community projects, built around creators who enjoy making things together.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#videos">Watch videos</a>
+          <button class="button secondary" id="copyIp">Copy server IP</button>
+        </div>
+      </div>
+
+      <aside class="server-panel">
+        <div class="server-top"><span class="live-dot"></span><span>MINECRAFT SERVER</span><strong id="serverState">Checking</strong></div>
+        <div class="server-ip">miragemultiverse.datho.st</div>
+        <div class="server-stats">
+          <div><b id="playerCount">...</b><span>players online</span></div>
+          <div><b id="playerMax">...</b><span>max players</span></div>
+          <div><b>Java</b><span>edition</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="videos" class="section">
+      <div class="section-head">
+        <div><span class="eyebrow">VIDEOS</span><h2>From the videos.</h2></div>
+        <p>Watch the latest starter videos directly on YouTube.</p>
+      </div>
+      <div class="video-grid">
+        <a class="video-card" href="https://youtu.be/oLhEjk6Vc2A" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/oLhEjk6Vc2A/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><small>VIDEO 01</small><b>Watch on YouTube ↗</b></div></a>
+        <a class="video-card" href="https://youtu.be/uKXckokWTmM" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/uKXckokWTmM/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><small>VIDEO 02</small><b>Watch on YouTube ↗</b></div></a>
+        <a class="video-card" href="https://youtu.be/3vRonNY7BSM" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/3vRonNY7BSM/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><small>VIDEO 03</small><b>Watch on YouTube ↗</b></div></a>
+        <a class="video-card" href="https://youtu.be/M1Fe9Z4o0c0" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/M1Fe9Z4o0c0/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><small>VIDEO 04</small><b>Watch on YouTube ↗</b></div></a>
+      </div>
+    </section>
+
+    <section id="creators" class="section creators-section">
+      <div class="section-head">
+        <div><span class="eyebrow">CREATORS</span><h2>Meet the creators.</h2></div>
+        <p>Each character is shown with a live Minecraft skin. The models rotate automatically and can be dragged.</p>
+      </div>
+      <div class="creator-grid" id="creatorGrid"></div>
+    </section>
+
+    <section class="section channel-section">
+      <div class="section-head">
+        <div><span class="eyebrow">YOUTUBE</span><h2>Creator channels.</h2></div>
+      </div>
+      <div class="channel-grid">
+        <a href="https://www.youtube.com/@yknimc" target="_blank" rel="noopener"><b>ykni</b><span>YouTube ↗</span></a>
+        <a href="https://www.youtube.com/@naltrexi" target="_blank" rel="noopener"><b>NaltRexo</b><span>YouTube ↗</span></a>
+        <a href="https://www.youtube.com/@Kingston_isGud" target="_blank" rel="noopener"><b>Kingstxn__</b><span>YouTube ↗</span></a>
+        <a href="https://www.youtube.com/@Vad0se-YT" target="_blank" rel="noopener"><b>Vad0se_</b><span>YouTube ↗</span></a>
+      </div>
+    </section>
+
+    <section id="apply" class="section apply-section">
+      <div class="section-head">
+        <div><span class="eyebrow">JOIN MIRAGE</span><h2>Apply for a role.</h2></div>
+        <p>Applications are open for actors, trusted members and builders.</p>
+      </div>
+      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button></div>
+      <form class="application-form" action="https://formsubmit.co/soobiem12@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Mirage Productions application"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="Role" id="roleField" value="Actor">
+        <div class="form-grid">
+          <label>Minecraft username<input name="Minecraft Username" required></label>
+          <label>Email<input type="email" name="Email" required></label>
+          <label>Discord username<input name="Discord" required></label>
+          <label>Age<input type="number" name="Age" min="13" max="99" required></label>
+        </div>
+        <label>Application<textarea name="Application" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
+        <label>Additional information<textarea name="Additional Information" rows="4" placeholder="Optional"></textarea></label>
+        <button class="button primary" type="submit">Send application</button>
+        <small>Applications are sent to the Mirage team.</small>
+      </form>
+    </section>
+
+    <section id="info" class="legal-grid">
+      <article class="info-card"><span class="eyebrow">CONTENT DISCLAIMER</span><h2>Content Disclaimer</h2><p>Our actors and POV creators are not highly trained professionals, and they may make errors or mistakes within their videos, performances, gameplay or actions.</p><p>Please do not treat them with disrespect. Patience and constructive feedback help everyone improve and keep Mirage a positive creative space.</p><p>Mirage content is created for entertainment and storytelling. Some scenes, characters and events may be fictional or performed specifically for a production.</p></article>
+      <article class="info-card"><span class="eyebrow">EULA</span><h2>End User License Agreement</h2><p>Read the complete Mirage agreement in the hosted document.</p><a class="button secondary" href="https://drive.google.com/file/d/10DJaPtVF-ySPmyWuYOCZIGuGw0McJz67/view?usp=sharing" target="_blank" rel="noopener">Open EULA ↗</a></article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><img src="assets/mirage-logo.png" alt=""><div><b>Mirage</b><span>Productions</span></div></div>
+    <div class="footer-actions"><a href="https://discord.gg/3mWSrqFJf6" target="_blank" rel="noopener">Discord</a><a href="#info">Disclaimer & EULA</a></div>
+    <small>© <span id="year"></span> Mirage Productions. Minecraft is a trademark of Mojang Studios.</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/skinview3d@3.2.0/bundles/skinview3d.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
