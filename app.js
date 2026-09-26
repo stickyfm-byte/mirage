@@ -7,19 +7,82 @@ const creators=[
 
 document.getElementById("year").textContent=new Date().getFullYear();
 
-document.getElementById("copyIp").addEventListener("click",async e=>{
-  try{await navigator.clipboard.writeText("mc.miragesmp.org");const old=e.currentTarget.textContent;e.currentTarget.textContent="Copied";setTimeout(()=>e.currentTarget.textContent=old,1300)}
-  catch{e.currentTarget.textContent="mc.miragesmp.org"}
+const copyIpButton=document.getElementById("copyIp");
+if(copyIpButton) copyIpButton.addEventListener("click",async e=>{
+  const button=e.currentTarget;
+  try{
+    await navigator.clipboard.writeText("mc.miragesmp.org");
+    button.textContent="✓ Copied";
+    button.classList.add("copied");
+    clearTimeout(button._copyTimer);
+    button._copyTimer=setTimeout(()=>{
+      button.textContent="Copy";
+      button.classList.remove("copied");
+    },1600);
+  }catch{
+    button.textContent="Copy failed";
+    clearTimeout(button._copyTimer);
+    button._copyTimer=setTimeout(()=>button.textContent="Copy",1600);
+  }
 });
+
+function cleanMotd(d){
+  const motd=d?.motd?.clean;
+  if(Array.isArray(motd)) return motd.filter(Boolean).join(" ").trim() || "No MOTD provided";
+  if(typeof motd === "string") return motd.trim() || "No MOTD provided";
+  return "No MOTD provided";
+}
+
+function recordingFromMotd(motd){
+  const text=motd.toLowerCase();
+  if(/recording\s+session\s+(active|on|started|live)/i.test(motd) || /recording\s*[:\-]?\s*(active|on|started|live)/i.test(motd)) return true;
+  if(/recording\s+session\s+(inactive|off|ended|offline)/i.test(motd) || /recording\s*[:\-]?\s*(inactive|off|ended|offline)/i.test(motd)) return false;
+  return null;
+}
+
+function setRecordingState(active){
+  const state=document.getElementById("recordingState"),dot=document.getElementById("recordingDot");
+  const status=document.getElementById("statusRecording");
+  if(!state && !status) return;
+  const label=active===true?"Active":active===false?"Inactive":"Unknown";
+  [state,status].forEach(el=>{if(el) el.textContent=label;});
+  if(dot){dot.classList.toggle("active",active===true);dot.classList.toggle("inactive",active===false);}
+}
 
 async function serverStatus(){
   const state=document.getElementById("serverState"),online=document.getElementById("playerCount"),max=document.getElementById("playerMax");
+  const statusText=document.getElementById("minecraftStatusText"),statusDot=document.getElementById("minecraftStatusDot");
+  const statusPlayers=document.getElementById("statusPlayers"),statusServerState=document.getElementById("statusServerState");
   try{
     const r=await fetch("https://api.mcsrvstat.us/3/mc.miragesmp.org",{cache:"no-store"});
     const d=await r.json();
-    if(d.online){online.textContent=d.players?.online??0;max.textContent=d.players?.max??"∞";state.textContent="Online";state.style.color="#62efae"}
-    else{online.textContent="0";max.textContent="offline";state.textContent="Offline";state.style.color="#ff9b9b"}
-  }catch{online.textContent="Live";max.textContent="check";state.textContent="Unavailable";state.style.color="#f1c76c"}
+    const motd=cleanMotd(d);
+    const recording=recordingFromMotd(motd);
+    setRecordingState(recording);
+    if(d.online){
+      const players=d.players?.online??0, maximum=d.players?.max??"∞";
+      if(online) online.textContent=players;
+      if(max) max.textContent=maximum;
+      if(state){state.textContent="Online";state.style.color="#62efae";}
+      if(statusText){statusText.textContent="Operational";statusText.style.color="#75efa0";} if(statusServerState) statusServerState.textContent="Online";
+      if(statusDot) statusDot.style.background="#55e88a";
+      if(statusPlayers) statusPlayers.textContent=`${players} / ${maximum}`;
+    }else{
+      if(online) online.textContent="0";
+      if(max) max.textContent="offline";
+      if(state){state.textContent="Offline";state.style.color="#ff9b9b";}
+      if(statusText){statusText.textContent="Offline";statusText.style.color="#ff9b9b";} if(statusServerState) statusServerState.textContent="Offline";
+      if(statusDot) statusDot.style.background="#ff6b6b";
+      if(statusPlayers) statusPlayers.textContent="Server offline";
+    }
+  }catch{
+    if(online) online.textContent="Live";
+    if(max) max.textContent="check";
+    if(state){state.textContent="Unavailable";state.style.color="#f1c76c";}
+    if(statusText){statusText.textContent="Unavailable";statusText.style.color="#f1c76c";}
+    if(statusPlayers) statusPlayers.textContent="Unable to fetch"; if(statusServerState) statusServerState.textContent="Unavailable";
+    setRecordingState(null);
+  }
 }
 serverStatus();setInterval(serverStatus,30000);
 
@@ -30,7 +93,7 @@ function headUrl(creator){
   return `https://mc-heads.net/avatar/${encodeURIComponent(creator.lookup)}/256`;
 }
 
-creators.forEach((creator,index)=>{
+if(grid) creators.forEach((creator,index)=>{
   const card=document.createElement("article");
   card.className="creator-card";
   const src=headUrl(creator);
@@ -56,22 +119,22 @@ const roleField=document.getElementById("roleField");
 const subjectField=document.getElementById("subjectField");
 const scriptWriterFields=document.getElementById("scriptWriterFields");
 const generalApplication=document.getElementById("generalApplication");
-const scriptRequiredFields=scriptWriterFields.querySelectorAll("[data-script-required]");
+const generalApplicationLabel=document.getElementById("generalApplicationLabel");
+const scriptRequiredFields=scriptWriterFields ? scriptWriterFields.querySelectorAll("[data-script-required]") : [];
 
 function setRole(role){
   roleTabs.forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
-  roleField.value=role;
-  subjectField.value=`Mirage Productions application — ${role}`;
-
+  if(roleField) roleField.value=role;
+  if(subjectField) subjectField.value=`Mirage Productions application — ${role}`;
   const isWriter=role==="Script Writer";
-  scriptWriterFields.hidden=!isWriter;
+  if(scriptWriterFields) scriptWriterFields.hidden=!isWriter;
   scriptRequiredFields.forEach(field=>field.required=isWriter);
-  generalApplication.required=!isWriter;
-  generalApplication.closest("label").style.display=isWriter?"none":"block";
+  if(generalApplication) generalApplication.required=!isWriter;
+  if(generalApplicationLabel) generalApplicationLabel.style.display=isWriter?"none":"block";
 }
 
 roleTabs.forEach(btn=>btn.addEventListener("click",()=>setRole(btn.dataset.role)));
-setRole("Actor");
+if(roleTabs.length) setRole("Actor");
 
 // Gentle reveal-on-scroll for section content, and highlight the nav link
 // for whichever section is currently in view.
@@ -97,3 +160,16 @@ if("IntersectionObserver" in window){
 }else{
   revealTargets.forEach(el=>el.classList.add("in-view"));
 }
+
+
+// Policy acknowledgement banner
+(function(){
+  const banner=document.getElementById("policyBanner");
+  const accept=document.getElementById("acceptPolicies");
+  if(!banner||!accept)return;
+  if(localStorage.getItem("miragePoliciesAccepted")==="1") banner.classList.add("hidden");
+  accept.addEventListener("click",()=>{
+    localStorage.setItem("miragePoliciesAccepted","1");
+    banner.classList.add("hidden");
+  });
+})();

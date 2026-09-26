@@ -26,13 +26,8 @@
       <img src="assets/mirage-logo.png" alt="Mirage logo">
       <span><b>Mirage</b><small>Productions</small></span>
     </a>
-    <nav>
-      <a href="#videos">Videos</a>
-      <a href="#creators">Creators</a>
-      <a href="#apply">Join</a>
-      <a href="#info">Info</a>
-    </nav>
-    <a class="discord" href="https://discord.gg/3mWSrqFJf6" target="_blank" rel="noopener">Discord ↗</a>
+    <nav><a href="index.html">Home</a><a href="forms.html">Forms</a><a href="status.html">Status</a><a href="updates.html">Updates</a><a href="legal.html">Legal</a></nav>
+    <a class="discord" href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord ↗</a>
   </header>
 
   <main id="top">
@@ -49,6 +44,8 @@
       <aside class="server-panel">
         <div class="server-top"><span class="live-dot"></span><span>MINECRAFT SERVER</span><strong id="serverState">Checking</strong></div>
         <div class="server-ip-row"><span class="server-ip">mc.miragesmp.org</span><button class="ip-copy" id="copyIp" type="button" aria-label="Copy server IP">Copy</button></div>
+        
+        <div class="recording-row"><div class="recording-label"><span class="recording-dot" id="recordingDot"></span><span>Recording Session</span></div><strong id="recordingState">Checking</strong></div>
         <div class="server-stats">
           <div><b id="playerCount">...</b><span>players online</span></div>
           <div><b id="playerMax">...</b><span>max players</span></div>
@@ -57,16 +54,16 @@
       </aside>
     </section>
 
-    <section id="videos" class="section">
+    <section id="videos" class="section videos-section">
       <div class="section-head">
         <div><span class="eyebrow">VIDEOS</span><h2>From the videos.</h2></div>
         
       </div>
-      <div class="video-grid">
-        <a class="video-card" href="https://www.youtube.com/watch?v=hoPNEa9tVBw&t" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/hoPNEa9tVBw/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><b>Watch on YouTube ↗</b></div></a>
-        <a class="video-card" href="https://www.youtube.com/watch?v=cHDVYJYpFiE&t" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/cHDVYJYpFiE/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><b>Watch on YouTube ↗</b></div></a>
-        <a class="video-card" href="https://youtu.be/3vRonNY7BSM" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/3vRonNY7BSM/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><b>Watch on YouTube ↗</b></div></a>
-        <a class="video-card" href="https://www.youtube.com/watch?v=oLhEjk6Vc2A" target="_blank" rel="noopener"><div class="thumb"><img src="https://i.ytimg.com/vi/oLhEjk6Vc2A/hqdefault.jpg" alt="Video preview"><span>▶</span></div><div><b>Watch on YouTube ↗</b></div></a>
+      <div class="video-strip" aria-label="Mirage videos">
+        <div class="video-strip-track">
+          <div class="video-strip-group"><a class="video-card" href="https://www.youtube.com/watch?v=hoPNEa9tVBw" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/hoPNEa9tVBw/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=cHDVYJYpFiE" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/cHDVYJYpFiE/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=3vRonNY7BSM" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/3vRonNY7BSM/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=oLhEjk6Vc2A" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/oLhEjk6Vc2A/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=uKXckokWTmM" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/uKXckokWTmM/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=M1Fe9Z4o0c0" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/M1Fe9Z4o0c0/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=5jlf___qFsc" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/5jlf___qFsc/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=hEuv1v_b45M" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/hEuv1v_b45M/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=XOhnFGmG_Q8" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/XOhnFGmG_Q8/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=8gpw4hmgqpk" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/8gpw4hmgqpk/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=bkAkwNIf_jg" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/bkAkwNIf_jg/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=WIKkHbfah8g" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/WIKkHbfah8g/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a></div>
+          <div class="video-strip-group" aria-hidden="true"><a class="video-card" href="https://www.youtube.com/watch?v=hoPNEa9tVBw" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/hoPNEa9tVBw/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=cHDVYJYpFiE" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/cHDVYJYpFiE/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=3vRonNY7BSM" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/3vRonNY7BSM/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=oLhEjk6Vc2A" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/oLhEjk6Vc2A/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=uKXckokWTmM" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/uKXckokWTmM/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=M1Fe9Z4o0c0" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/M1Fe9Z4o0c0/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=5jlf___qFsc" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/5jlf___qFsc/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=hEuv1v_b45M" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/hEuv1v_b45M/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=XOhnFGmG_Q8" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/XOhnFGmG_Q8/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=8gpw4hmgqpk" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/8gpw4hmgqpk/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=bkAkwNIf_jg" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/bkAkwNIf_jg/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a><a class="video-card" href="https://www.youtube.com/watch?v=WIKkHbfah8g" target="_blank" rel="noopener" aria-label="Watch video on YouTube"><div class="thumb"><img src="https://i.ytimg.com/vi/WIKkHbfah8g/hqdefault.jpg" alt="YouTube video thumbnail" loading="lazy"><span aria-hidden="true">▶</span></div><div><b>Watch on YouTube ↗</b></div></a></div>
+        </div>
       </div>
     </section>
 
@@ -78,54 +75,9 @@
       <div class="creator-grid" id="creatorGrid"></div>
     </section>
 
-    <section id="apply" class="section apply-section">
-      <div class="section-head">
-        <div><span class="eyebrow">JOIN MIRAGE</span><h2>Apply for a role.</h2></div>
-        
-      </div>
-      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button></div>
-      <form class="application-form" id="applicationForm" action="https://formsubmit.co/soobiem12@gmail.com" method="POST">
-        <input type="hidden" name="_subject" id="subjectField" value="Mirage Productions application — Actor">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="Role" id="roleField" value="Actor">
-
-        <div class="form-grid">
-          <label>Minecraft username<input name="Minecraft Username" required></label>
-          <label>Email<input type="email" name="Email" required></label>
-          <label>Discord username<input name="Discord" required></label>
-          <label>Age<input type="number" name="Age" min="13" max="99" required></label>
-        </div>
-
-        <div id="scriptWriterFields" class="role-extra-fields" hidden>
-          <div class="role-intro">
-            <span class="eyebrow">SCRIPT WRITER</span>
-            <p>Tell us about your writing experience, how you approach storytelling, and what you could bring to Mirage Events.</p>
-          </div>
-
-          <div class="form-grid">
-            <label>Timezone<input name="Timezone" data-script-required placeholder="e.g. GMT / BST"></label>
-            <label>Availability<input name="Availability" data-script-required placeholder="e.g. 8–12 hours per week"></label>
-          </div>
-
-          <label>Previous writing experience<textarea name="Writing Experience" data-script-required rows="5" placeholder="Tell us about any scripts, stories, SMPs, events or other projects you have written for."></textarea></label>
-
-          <label>Portfolio / writing samples<textarea name="Portfolio" rows="3" placeholder="Links to previous work, documents or videos (optional)."></textarea></label>
-
-          <label>Why do you want to join Mirage as a Script Writer?<textarea name="Why Script Writer" data-script-required rows="5" placeholder="Tell us what interests you about writing for Mirage Events."></textarea></label>
-
-          <label>How would you build a storyline for a Minecraft event?<textarea name="Story Approach" data-script-required rows="5" placeholder="Explain how you would develop characters, conflict, pacing and a satisfying conclusion."></textarea></label>
-
-          <label>Writing sample<textarea name="Writing Sample" data-script-required rows="8" placeholder="Write a short scene for a Minecraft event. Include at least two characters and a clear source of tension or conflict."></textarea></label>
-
-          <label>Working with a team<textarea name="Teamwork" data-script-required rows="4" placeholder="How do you handle feedback, changes to your writing and working from someone else's plot or ideas?"></textarea></label>
-        </div>
-
-        <label id="generalApplicationLabel">Application<textarea name="Application" id="generalApplication" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
-        <label>Additional information<textarea name="Additional Information" rows="4" placeholder="Optional"></textarea></label>
-        <button class="button primary" type="submit">Send application</button>
-        <small>Applications are sent to the Mirage team.</small>
-      </form>
+    <section id="status" class="section mini-status">
+      <div class="section-head"><div><span class="eyebrow">SYSTEM STATUS</span><h2>Mirage Systems.</h2></div><a class="button secondary" href="status.html">View status ↗</a></div>
+      <div class="status-grid"><div><span class="status-dot"></span><b>Website</b><span>Operational</span></div><div><span class="status-dot"></span><b>Minecraft Server</b><span>Operational</span></div><div><span class="status-dot"></span><b>Applications</b><span>Open</span></div><div><span class="status-dot"></span><b>Discord</b><span>Operational</span></div></div>
     </section>
 
     <section id="info" class="legal-grid">
@@ -136,9 +88,22 @@
 
   <footer>
     <div class="footer-brand"><img src="assets/mirage-logo.png" alt=""><div><b>Mirage</b><span>Productions</span></div></div>
-    <div class="footer-actions"><a href="https://discord.gg/3mWSrqFJf6" target="_blank" rel="noopener">Discord</a><a href="#info">Disclaimer & EULA</a></div>
+    <div class="footer-actions"><a href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord</a><a href="status.html">Status</a><a href="updates.html">Updates</a><a href="legal.html">Legal & Policies</a></div>
+    <div class="official-links"><b>Official Links</b><a href="https://miragesmp.org/" target="_blank" rel="noopener">Website</a><a href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord</a><a href="https://www.youtube.com/@yknimc" target="_blank" rel="noopener">ykni</a><a href="https://www.youtube.com/@Vad0se-YT" target="_blank" rel="noopener">Vadose</a><a href="https://www.youtube.com/@naltrexi" target="_blank" rel="noopener">Nalt</a><a href="https://www.twitch.tv/vadoserobin" target="_blank" rel="noopener">Vadose on Twitch</a><a href="https://www.youtube.com/@Kingston_isGud" target="_blank" rel="noopener">Kingston</a></div>
+    <div class="official-emails"><b>Contact</b><a href="mailto:contact@miragesmp.org">contact@miragesmp.org</a><a href="mailto:applications@miragesmp.org">applications@miragesmp.org</a><a href="mailto:staff@miragesmp.org">staff@miragesmp.org</a></div>
     <small>© <span id="year"></span> Mirage Productions. Minecraft is a trademark of Mojang Studios.</small>
   </footer>
+
+  <div id="policyBanner" class="policy-banner" role="dialog" aria-label="Mirage terms and policies">
+    <div class="policy-banner-copy">
+      <strong>Before you continue</strong>
+      <p>By continuing to use Mirage, you acknowledge that you have read and agree to our <a href="legal.html">Terms of Service</a> and acknowledge our other policies.</p>
+    </div>
+    <div class="policy-banner-actions">
+      <a class="button secondary" href="legal.html">Review policies</a>
+      <button id="acceptPolicies" class="button primary" type="button">Accept all</button>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
