@@ -100,10 +100,18 @@
     </div>
     <div class="policy-banner-actions">
       <a class="button secondary" href="/legal/">Review policies</a>
-      <button id="acceptPolicies" class="button primary" type="button">Accept all</button>
+      <button id="acceptPolicies" class="button primary" type="button" >Accept all</button>
     </div>
   </div>
 
+  <script>
+    window.acceptMiragePolicies = function(event){
+      if(event){ event.preventDefault(); event.stopPropagation(); }
+      var banner=document.getElementById("policyBanner");
+      if(banner){ banner.classList.add("hidden"); banner.setAttribute("aria-hidden","true"); }
+      try { localStorage.setItem("miragePoliciesAccepted","1"); } catch(e) {}
+    };
+  </script>
   <script src="app.js"></script>
 </body>
 </html>

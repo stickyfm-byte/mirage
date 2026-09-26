@@ -29,4 +29,4 @@ python -m http.server 8000
 
 Then visit http://localhost:8000
 
-The application form uses FormSubmit and targets soobiem12@gmail.com. FormSubmit may ask for an initial email confirmation.
+The application form uses FormSubmit and targets applications@miragesmp.org. FormSubmit may ask for an initial email confirmation.
