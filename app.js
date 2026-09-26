@@ -51,11 +51,27 @@ creators.forEach((creator,index)=>{
   grid.appendChild(card);
 });
 
-document.querySelectorAll(".role-tab").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".role-tab").forEach(x=>x.classList.remove("selected"));
-  btn.classList.add("selected");
-  document.getElementById("roleField").value=btn.dataset.role;
-}));
+const roleTabs=document.querySelectorAll(".role-tab");
+const roleField=document.getElementById("roleField");
+const subjectField=document.getElementById("subjectField");
+const scriptWriterFields=document.getElementById("scriptWriterFields");
+const generalApplication=document.getElementById("generalApplication");
+const scriptRequiredFields=scriptWriterFields.querySelectorAll("[data-script-required]");
+
+function setRole(role){
+  roleTabs.forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
+  roleField.value=role;
+  subjectField.value=`Mirage Productions application — ${role}`;
+
+  const isWriter=role==="Script Writer";
+  scriptWriterFields.hidden=!isWriter;
+  scriptRequiredFields.forEach(field=>field.required=isWriter);
+  generalApplication.required=!isWriter;
+  generalApplication.closest("label").style.display=isWriter?"none":"block";
+}
+
+roleTabs.forEach(btn=>btn.addEventListener("click",()=>setRole(btn.dataset.role)));
+setRole("Actor");
 
 // Gentle reveal-on-scroll for section content, and highlight the nav link
 // for whichever section is currently in view.

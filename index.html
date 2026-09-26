@@ -83,16 +83,45 @@
         <div><span class="eyebrow">JOIN MIRAGE</span><h2>Apply for a role.</h2></div>
         
       </div>
-      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button></div>
-      <form class="application-form" action="https://formsubmit.co/soobiem12@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Mirage Productions application"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="Role" id="roleField" value="Actor">
+      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button></div>
+      <form class="application-form" id="applicationForm" action="https://formsubmit.co/soobiem12@gmail.com" method="POST">
+        <input type="hidden" name="_subject" id="subjectField" value="Mirage Productions application — Actor">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="Role" id="roleField" value="Actor">
+
         <div class="form-grid">
           <label>Minecraft username<input name="Minecraft Username" required></label>
           <label>Email<input type="email" name="Email" required></label>
           <label>Discord username<input name="Discord" required></label>
           <label>Age<input type="number" name="Age" min="13" max="99" required></label>
         </div>
-        <label>Application<textarea name="Application" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
+
+        <div id="scriptWriterFields" class="role-extra-fields" hidden>
+          <div class="role-intro">
+            <span class="eyebrow">SCRIPT WRITER</span>
+            <p>Tell us about your writing experience, how you approach storytelling, and what you could bring to Mirage Events.</p>
+          </div>
+
+          <div class="form-grid">
+            <label>Timezone<input name="Timezone" data-script-required placeholder="e.g. GMT / BST"></label>
+            <label>Availability<input name="Availability" data-script-required placeholder="e.g. 8–12 hours per week"></label>
+          </div>
+
+          <label>Previous writing experience<textarea name="Writing Experience" data-script-required rows="5" placeholder="Tell us about any scripts, stories, SMPs, events or other projects you have written for."></textarea></label>
+
+          <label>Portfolio / writing samples<textarea name="Portfolio" rows="3" placeholder="Links to previous work, documents or videos (optional)."></textarea></label>
+
+          <label>Why do you want to join Mirage as a Script Writer?<textarea name="Why Script Writer" data-script-required rows="5" placeholder="Tell us what interests you about writing for Mirage Events."></textarea></label>
+
+          <label>How would you build a storyline for a Minecraft event?<textarea name="Story Approach" data-script-required rows="5" placeholder="Explain how you would develop characters, conflict, pacing and a satisfying conclusion."></textarea></label>
+
+          <label>Writing sample<textarea name="Writing Sample" data-script-required rows="8" placeholder="Write a short scene for a Minecraft event. Include at least two characters and a clear source of tension or conflict."></textarea></label>
+
+          <label>Working with a team<textarea name="Teamwork" data-script-required rows="4" placeholder="How do you handle feedback, changes to your writing and working from someone else's plot or ideas?"></textarea></label>
+        </div>
+
+        <label id="generalApplicationLabel">Application<textarea name="Application" id="generalApplication" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
         <label>Additional information<textarea name="Additional Information" rows="4" placeholder="Optional"></textarea></label>
         <button class="button primary" type="submit">Send application</button>
         <small>Applications are sent to the Mirage team.</small>
