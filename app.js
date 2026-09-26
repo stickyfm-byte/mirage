@@ -33,22 +33,6 @@ function cleanMotd(d){
   return "No MOTD provided";
 }
 
-function recordingFromMotd(motd){
-  const text=motd.toLowerCase();
-  if(/recording\s+session\s+(active|on|started|live)/i.test(motd) || /recording\s*[:\-]?\s*(active|on|started|live)/i.test(motd)) return true;
-  if(/recording\s+session\s+(inactive|off|ended|offline)/i.test(motd) || /recording\s*[:\-]?\s*(inactive|off|ended|offline)/i.test(motd)) return false;
-  return null;
-}
-
-function setRecordingState(active){
-  const state=document.getElementById("recordingState"),dot=document.getElementById("recordingDot");
-  const status=document.getElementById("statusRecording");
-  if(!state && !status) return;
-  const label=active===true?"Active":active===false?"Inactive":"Unknown";
-  [state,status].forEach(el=>{if(el) el.textContent=label;});
-  if(dot){dot.classList.toggle("active",active===true);dot.classList.toggle("inactive",active===false);}
-}
-
 async function serverStatus(){
   const state=document.getElementById("serverState"),online=document.getElementById("playerCount"),max=document.getElementById("playerMax");
   const statusText=document.getElementById("minecraftStatusText"),statusDot=document.getElementById("minecraftStatusDot");
@@ -56,9 +40,6 @@ async function serverStatus(){
   try{
     const r=await fetch("https://api.mcsrvstat.us/3/mc.miragesmp.org",{cache:"no-store"});
     const d=await r.json();
-    const motd=cleanMotd(d);
-    const recording=recordingFromMotd(motd);
-    setRecordingState(recording);
     if(d.online){
       const players=d.players?.online??0, maximum=d.players?.max??"∞";
       if(online) online.textContent=players;
@@ -81,7 +62,6 @@ async function serverStatus(){
     if(state){state.textContent="Unavailable";state.style.color="#f1c76c";}
     if(statusText){statusText.textContent="Unavailable";statusText.style.color="#f1c76c";}
     if(statusPlayers) statusPlayers.textContent="Unable to fetch"; if(statusServerState) statusServerState.textContent="Unavailable";
-    setRecordingState(null);
   }
 }
 serverStatus();setInterval(serverStatus,30000);
