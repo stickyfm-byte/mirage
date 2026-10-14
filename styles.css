@@ -98,3 +98,13 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
   .vrail.is-in .vcard{animation:none}
   .vcard,.vcard img,.vplay,.vopen{transition-duration:.01ms}
 }
+
+/* ===== Cookie / terms banner ===== */
+.policy-banner:not(.hidden){animation:bannerIn .75s cubic-bezier(.22,1,.36,1)}
+@keyframes bannerIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.policy-banner-copy em{font-style:normal;font-weight:600;color:#dff7ff}
+@media (max-width:640px){
+  .policy-banner{max-height:calc(100svh - 24px);overflow:auto}
+  .policy-banner-review{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.policy-banner:not(.hidden){animation:none}}

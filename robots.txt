@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /forms/thanks/
+Disallow: /404.html
+
+Sitemap: https://miragesmp.org/sitemap.xml

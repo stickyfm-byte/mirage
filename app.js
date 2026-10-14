@@ -363,22 +363,3 @@ if("IntersectionObserver" in window){
 }else{
   revealTargets.forEach(el=>el.classList.add("in-view"));
 }
-
-// Policy acknowledgement banner. The homepage also defines this inline so it still works if this script is delayed.
-(function(){
-  const banner=document.getElementById("policyBanner");
-  const accept=document.getElementById("acceptPolicies");
-  if(!banner || !accept) return;
-  const hide=()=>{
-    banner.classList.add("hidden");
-    banner.setAttribute("aria-hidden","true");
-    try{localStorage.setItem("miragePoliciesAccepted","1");}catch(e){}
-  };
-  try{
-    if(localStorage.getItem("miragePoliciesAccepted")==="1") hide();
-  }catch(e){}
-  if(!accept.dataset.bound){
-    accept.dataset.bound="1";
-    accept.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();hide();},{capture:true});
-  }
-})();

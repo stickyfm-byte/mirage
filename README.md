@@ -30,3 +30,9 @@ python -m http.server 8000
 Then visit http://localhost:8000
 
 The application form uses FormSubmit and targets applications@miragesmp.org. FormSubmit may ask for an initial email confirmation.
+
+## Privacy, sharing and forms
+- `assets/consent.js` shows the welcome / cookie banner on every page. Google Analytics (G-8CP2K9MB7N) is only loaded after a visitor chooses "Accept all"; "Essential only" keeps it off, and the footer's "Cookie settings" link reopens the choice (and clears the analytics cookies when switching off).
+- Applications redirect to `/forms/thanks/` (Shimmy's thank-you page) via FormSubmit's `_next` field, and a hidden `_honeypot` field catches basic spam bots.
+- Link previews: every page has Open Graph / Twitter tags pointing at `assets/og-image.jpg` (1200x630), plus `sitemap.xml` and `robots.txt`. They assume the site lives at https://miragesmp.org, so change that base URL if it ever moves.
+- `404.html` and the thank-you page share `assets/shimmy-page.css` and `assets/shimmy.js`.
