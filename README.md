@@ -5,9 +5,9 @@ Single-page Mirage Productions website.
 ## Included
 
 - Supplied Mirage logo
-- Light-to-dark blue gradient background
+- Smooth eased blue gradient background with slow-drifting colour glow and fine grain (no banding)
 - Live player count for mc.miragesmp.org
-- Four YouTube video previews
+- Endless video rail (13 videos): thumbnails only, eased hover slow-down, drag/swipe with momentum, staggered entrance. Add a video by appending its YouTube ID to `videoIds` in app.js
 - Four creator cards with independent 3D Minecraft skin viewers
 - Automatic skin rotation
 - NameMC and YouTube links for each creator
