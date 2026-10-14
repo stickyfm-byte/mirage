@@ -15,7 +15,7 @@ Single-page Mirage Productions website.
 - Content Disclaimer
 - EULA link
 - Discord link
-- Responsive layout
+- Custom 404 page (`404.html`, wired in `.htaccess`) with Shimmy, the Mirage heat-haze mascot: eyes follow the cursor, click to poke, rippling reflection
 
 ## Skin loading
 
