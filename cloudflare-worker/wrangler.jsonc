@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mirage-applications-api",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-15",
+  "vars": {
+    "ALLOWED_ORIGINS": "https://miragesmp.org,https://www.miragesmp.org"
+  }
+}
