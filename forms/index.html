@@ -25,12 +25,8 @@
         
       </div>
       <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button></div>
-      <form class="application-form" id="applicationForm" action="https://formsubmit.co/applications@miragesmp.org" method="POST">
-        <input type="hidden" name="_subject" id="subjectField" value="Mirage Productions application — Actor">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://miragesmp.org/forms/thanks/">
-<input type="text" name="_honeypot" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <form class="application-form" id="applicationForm" action="/submit-application.php" method="POST">
+        <input type="text" name="_honeypot" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <input type="hidden" name="Role" id="roleField" value="Actor">
 
         <div class="form-grid">
@@ -67,7 +63,7 @@
         <label id="generalApplicationLabel">Application<textarea name="Application" id="generalApplication" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
         <label>Additional information<textarea name="Additional Information" rows="4" placeholder="Optional"></textarea></label>
         <button class="button primary" type="submit">Send application</button>
-        <small>Applications are sent to the Mirage team.</small>
+        <small>Applications are sent to the Mirage team for review. Your submitted details will be shared with authorised application reviewers in the team's private Discord channel.</small>
       </form>
     </section></main>
 <footer><div class="footer-brand"><img src="../assets/mirage-logo.png" alt=""><div><b>Mirage</b><span>Productions</span></div></div><div class="footer-actions"><a href="/">Home</a><a href="/forms/">Forms</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/legal/">Legal & Policies</a><a href="/legal/#privacy" data-cookie-settings>Cookie settings</a></div><div class="official-links"><b>Official Links</b><a href="https://miragesmp.org/" target="_blank" rel="noopener">Website</a><a href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord</a><a href="https://www.youtube.com/@yknimc" target="_blank" rel="noopener">ykni</a><a href="https://www.youtube.com/@Vad0se-YT" target="_blank" rel="noopener">Vadose</a><a href="https://www.youtube.com/@naltrexi" target="_blank" rel="noopener">Nalt</a><a href="https://www.twitch.tv/vadoserobin" target="_blank" rel="noopener">Vadose on Twitch</a><a href="https://www.youtube.com/@Kingston_isGud" target="_blank" rel="noopener">Kingston</a></div><div class="official-emails"><b>Contact</b><a href="mailto:contact@miragesmp.org">contact@miragesmp.org</a><a href="mailto:applications@miragesmp.org">applications@miragesmp.org</a><a href="mailto:staff@miragesmp.org">staff@miragesmp.org</a></div><small>© <span id="year"></span> Mirage Productions. Minecraft is a trademark of Mojang Studios.</small></footer><script src="../app.js"></script></body></html>

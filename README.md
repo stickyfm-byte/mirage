@@ -36,3 +36,18 @@ The application form uses FormSubmit and targets applications@miragesmp.org. For
 - Applications redirect to `/forms/thanks/` (Shimmy's thank-you page) via FormSubmit's `_next` field, and a hidden `_honeypot` field catches basic spam bots.
 - Link previews: every page has Open Graph / Twitter tags pointing at `assets/og-image.jpg` (1200x630), plus `sitemap.xml` and `robots.txt`. They assume the site lives at https://miragesmp.org, so change that base URL if it ever moves.
 - `404.html` and the thank-you page share `assets/shimmy-page.css` and `assets/shimmy.js`.
+
+
+## Discord application notifications
+
+Application submissions are sent to Discord by `submit-application.php`. The webhook URL is read from the server environment variable `MIRAGE_DISCORD_WEBHOOK`, never from browser JavaScript.
+
+### Deployment checklist
+
+1. **Regenerate the webhook in Discord first.** The previous URL was shared in a chat, so treat it as compromised.
+2. Configure the new URL as the server environment variable `MIRAGE_DISCORD_WEBHOOK` in your hosting control panel. Do not put it in `forms/index.html` or `app.js`.
+3. Ensure hosting supports PHP 7.4+, the cURL extension, and outbound HTTPS.
+4. The handler also attempts to email `applications@miragesmp.org` using PHP `mail()`. Confirm mail is configured by the host; otherwise configure an SMTP mailer.
+5. Test with a sample application and confirm the embed arrives in the intended **private staff-only channel**. Application submissions contain personal information, so restrict access to authorised reviewers.
+
+The handler sends one Discord embed per submission, with the available form fields and timestamp. Discord delivery failures are logged server-side and shown to the applicant. Static-only hosting cannot run this PHP handler.
