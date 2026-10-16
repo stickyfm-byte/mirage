@@ -108,3 +108,40 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
   .policy-banner-review{grid-column:1/-1}
 }
 @media (prefers-reduced-motion:reduce){.policy-banner:not(.hidden){animation:none}}
+
+
+/* Application form polish */
+.apply-section .section-head{animation:formHeadingIn .7s cubic-bezier(.2,.75,.25,1) both}
+.role-tabs{flex-wrap:wrap;gap:10px}
+.role-tab{position:relative;isolation:isolate;overflow:hidden;transition:color .25s ease,background .25s ease,border-color .25s ease,transform .25s ease,box-shadow .25s ease}
+.role-tab:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(110deg,transparent 15%,rgba(255,255,255,.24) 48%,transparent 80%);transform:translateX(-130%);transition:transform .55s ease}
+.role-tab:hover{transform:translateY(-3px);border-color:rgba(91,234,255,.55);color:#effdff;box-shadow:0 8px 24px rgba(0,190,255,.1)}
+.role-tab:hover:before{transform:translateX(130%)}
+.role-tab.selected{box-shadow:0 0 0 1px rgba(91,234,255,.12),0 7px 24px rgba(0,190,255,.16);transform:translateY(-1px)}
+.application-form{position:relative;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.15);transition:border-color .3s ease,box-shadow .3s ease;animation:formCardIn .7s cubic-bezier(.2,.75,.25,1) both}
+.application-form:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,#5cecff,#8a7dff,#5cecff,transparent);background-size:200% 100%;animation:formGlow 5s linear infinite;pointer-events:none}
+.application-form:focus-within{border-color:rgba(91,234,255,.32);box-shadow:0 20px 60px rgba(0,0,0,.2),0 0 35px rgba(0,190,255,.06)}
+.application-form label{animation:fieldFadeIn .45s ease both}
+.application-form .form-grid label:nth-child(2){animation-delay:.05s}
+.application-form .form-grid label:nth-child(3){animation-delay:.1s}
+.application-form .form-grid label:nth-child(4){animation-delay:.15s}
+.role-extra-fields[hidden]{display:none}
+.role-extra-fields:not([hidden]){animation:roleFieldsIn .4s cubic-bezier(.2,.75,.25,1) both}
+.role-intro{padding:16px 18px;margin:2px 0 20px;border:1px solid rgba(105,229,255,.15);border-radius:10px;background:linear-gradient(120deg,rgba(12,70,99,.3),rgba(8,35,66,.22));animation:fieldFadeIn .4s ease both}
+.role-intro p{margin:9px 0 0;color:#a9c9d8;font-size:13px;line-height:1.7}
+.application-form input,.application-form textarea{transition:border-color .22s ease,background .22s ease,box-shadow .22s ease,transform .22s ease}
+.application-form input:hover,.application-form textarea:hover{border-color:rgba(105,229,255,.3)}
+.application-form input:focus,.application-form textarea:focus{background:#03213b;box-shadow:0 0 0 3px rgba(91,234,255,.09);transform:translateY(-1px)}
+.application-form textarea{resize:vertical;min-height:88px}
+.application-form button[type="submit"]{position:relative;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,opacity .22s ease}
+.application-form button[type="submit"]:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.4) 50%,transparent 80%);transform:translateX(-130%);transition:transform .6s ease}
+.application-form button[type="submit"]:hover{transform:translateY(-2px);box-shadow:0 9px 28px rgba(65,220,255,.2)}
+.application-form button[type="submit"]:hover:after{transform:translateX(130%)}
+.application-form button[type="submit"]:disabled{opacity:.65;cursor:wait;transform:none}
+#applicationStatus{padding:13px 15px;border:1px solid rgba(91,234,255,.2);border-radius:8px;background:rgba(9,67,91,.3);color:#c9faff;animation:fieldFadeIn .3s ease both}
+@keyframes formHeadingIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes formCardIn{from{opacity:0;transform:translateY(18px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes fieldFadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes roleFieldsIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes formGlow{to{background-position:200% 0}}
+@media(prefers-reduced-motion:reduce){.apply-section .section-head,.application-form,.application-form label,.role-extra-fields:not([hidden]),.role-intro,#applicationStatus{animation:none!important}.role-tab,.application-form input,.application-form textarea,.application-form button[type="submit"]{transition:none!important}.role-tab:hover,.role-tab.selected,.application-form input:focus,.application-form textarea:focus,.application-form button[type="submit"]:hover{transform:none!important}.role-tab:before,.application-form button[type="submit"]:after{display:none}}
