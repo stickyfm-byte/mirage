@@ -315,18 +315,23 @@ const roleTabs=document.querySelectorAll(".role-tab");
 const roleField=document.getElementById("roleField");
 const subjectField=document.getElementById("subjectField");
 const scriptWriterFields=document.getElementById("scriptWriterFields");
+const moderatorFields=document.getElementById("moderatorFields");
 const generalApplication=document.getElementById("generalApplication");
 const generalApplicationLabel=document.getElementById("generalApplicationLabel");
 const scriptRequiredFields=scriptWriterFields ? scriptWriterFields.querySelectorAll("[data-script-required]") : [];
+const moderatorRequiredFields=moderatorFields ? moderatorFields.querySelectorAll("[data-moderator-required]") : [];
 function setRole(role){
   roleTabs.forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
   if(roleField) roleField.value=role;
   if(subjectField) subjectField.value=`Mirage Productions application — ${role}`;
   const isWriter=role==="Script Writer";
+  const isModerator=role==="Moderator";
   if(scriptWriterFields) scriptWriterFields.hidden=!isWriter;
+  if(moderatorFields) moderatorFields.hidden=!isModerator;
   scriptRequiredFields.forEach(field=>field.required=isWriter);
-  if(generalApplication) generalApplication.required=!isWriter;
-  if(generalApplicationLabel) generalApplicationLabel.style.display=isWriter?"none":"block";
+  moderatorRequiredFields.forEach(field=>field.required=isModerator);
+  if(generalApplication) generalApplication.required=!isWriter&&!isModerator;
+  if(generalApplicationLabel) generalApplicationLabel.style.display=(isWriter||isModerator)?"none":"block";
 }
 roleTabs.forEach(btn=>btn.addEventListener("click",()=>setRole(btn.dataset.role)));
 if(roleTabs.length) setRole("Actor");
