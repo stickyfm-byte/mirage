@@ -24,7 +24,7 @@
         <div><span class="eyebrow">JOIN MIRAGE</span><h2>Apply for a Role</h2></div>
         
       </div>
-      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button></div>
+      <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button><button class="role-tab" data-role="Moderator">Moderator</button></div>
       <form class="application-form" id="applicationForm" method="POST">
         <input type="text" name="_honeypot" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <input type="hidden" name="Role" id="roleField" value="Actor">
@@ -60,6 +60,21 @@
           <label>Working with a team<textarea name="Teamwork" data-script-required rows="4" placeholder="How do you handle feedback, changes to your writing and working from someone else's plot or ideas?"></textarea></label>
         </div>
 
+        <div id="moderatorFields" class="role-extra-fields" hidden>
+          <div class="role-intro">
+            <span class="eyebrow">MODERATOR</span>
+            <p>Tell us about your staff experience, judgement, and how you would help keep the Mirage community safe and welcoming. Previous staff experience is useful but not required.</p>
+          </div>
+          <div class="form-grid">
+            <label>Timezone<input name="Timezone" data-moderator-required placeholder="e.g. GMT / BST"></label>
+            <label>Availability<input name="Availability" data-moderator-required placeholder="e.g. evenings and weekends"></label>
+          </div>
+          <label>Past staff experience<textarea name="Past Staff Experience" data-moderator-required rows="5" placeholder="What servers or communities have you helped staff? Describe your role and responsibilities. If you have no past staff experience, explain that and share relevant skills."></textarea></label>
+          <label>Moderation experience and tools<textarea name="Moderation Experience" data-moderator-required rows="4" placeholder="Describe experience with reports, rule enforcement, tickets, logs or moderation bots—or how you would learn."></textarea></label>
+          <label>Why do you want to be a Mirage Moderator?<textarea name="Why Moderator" data-moderator-required rows="5" placeholder="What interests you about helping this community, and what strengths would you bring?"></textarea></label>
+          <label>Scenario: a player reports harassment, but you did not witness it. What would you do?<textarea name="Scenario Response" data-moderator-required rows="5" placeholder="Explain how you would gather context, preserve evidence, protect privacy and decide whether to escalate."></textarea></label>
+          <label>Handling conflict and staying fair<textarea name="Conflict Handling" data-moderator-required rows="5" placeholder="How would you respond if a friend broke a rule, or a player disagreed with a moderation decision?"></textarea></label>
+        </div>
         <label id="generalApplicationLabel">Application<textarea name="Application" id="generalApplication" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
         <label>Additional information<textarea name="Additional Information" rows="4" placeholder="Optional"></textarea></label>
         <button class="button primary" type="submit">Send application</button>
