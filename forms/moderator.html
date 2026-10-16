@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#031827">
+  <title>Moderator Application — Mirage Productions</title>
+  <meta name="description" content="Apply to become a moderator with Mirage Productions. Tell us about your experience, judgement and availability.">
+  <link rel="canonical" href="https://miragesmp.org/forms/moderator.html">
+  <link rel="icon" href="../assets/file.png" type="image/png">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="/assets/consent.js" defer></script>
+</head>
+<body>
+  <div class="gradient-bg" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/"><img src="../assets/mirage-logo.png" alt="Mirage logo"><span><b>Mirage</b><small>Productions</small></span></a>
+    <nav><a href="/">Home</a><a href="/forms/">Forms</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/legal/">Legal</a></nav>
+    <a class="discord" href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord ↗</a>
+  </header>
+
+  <main>
+    <section class="status-page" style="padding-bottom:24px">
+      <div class="status-hero">
+        <span class="eyebrow">MIRAGE STAFF APPLICATIONS</span>
+        <h1>Moderator Application</h1>
+        <p>Interested in helping keep Mirage welcoming, fair and enjoyable? Tell us about your experience, how you handle difficult situations, and when you’re available. Be honest—previous staff experience is helpful, but not required.</p>
+      </div>
+    </section>
+    <section class="section apply-section">
+      <div class="section-head">
+        <div><span class="eyebrow">JOIN THE TEAM</span><h2>Apply to become a Moderator</h2></div>
+      </div>
+      <form class="application-form" id="moderatorApplicationForm" method="POST">
+        <input type="text" name="_honeypot" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <input type="hidden" name="Role" value="Moderator">
+        <div class="form-grid">
+          <label>Minecraft username<input name="Minecraft Username" required maxlength="100" autocomplete="off"></label>
+          <label>Email address<input type="email" name="Email" required maxlength="200" autocomplete="email"></label>
+          <label>Discord username<input name="Discord" required maxlength="100" autocomplete="off"></label>
+          <label>Age<input type="number" name="Age" min="13" max="99" required></label>
+          <label>Timezone<input name="Timezone" required maxlength="100" placeholder="e.g. GMT / BST"></label>
+          <label>Availability<input name="Availability" required maxlength="300" placeholder="e.g. evenings and weekends"></label>
+        </div>
+
+        <label>Past staff experience <span>(required — if you have none, explain that here)</span>
+          <textarea name="Past Staff Experience" rows="5" required maxlength="1800" placeholder="Have you been staff on a Minecraft server, Discord community or other online community? What was your role, what did you learn, and what responsibilities did you have? If this would be your first staff role, tell us about relevant skills instead."></textarea>
+        </label>
+        <label>Moderation experience and tools
+          <textarea name="Moderation Experience" rows="4" required maxlength="1800" placeholder="Describe any experience with chat moderation, reports, rule enforcement, tickets, logs or moderation bots. If you're new to moderation, explain how you would learn."></textarea>
+        </label>
+        <label>Why do you want to be a Mirage Moderator?
+          <textarea name="Why Moderator" rows="5" required maxlength="1500" placeholder="What interests you about helping this community, and what strengths would you bring to the team?"></textarea>
+        </label>
+        <label>Scenario: a player reports harassment, but you did not witness it. What would you do?
+          <textarea name="Scenario Response" rows="5" required maxlength="1800" placeholder="Explain how you would gather context, preserve evidence, protect privacy, and decide whether to escalate the report."></textarea>
+        </label>
+        <label>Handling conflict and staying fair
+          <textarea name="Conflict Handling" rows="5" required maxlength="1500" placeholder="How would you respond if a friend broke a rule, or if a player became angry about a moderation decision?"></textarea>
+        </label>
+        <label>Anything else you'd like us to know? <span>(optional)</span>
+          <textarea name="Additional Information" rows="3" maxlength="1500" placeholder="Relevant skills, languages, ideas, or anything else you want the team to consider."></textarea>
+        </label>
+
+        <button class="button primary" type="submit">Send Moderator Application</button>
+        <small>By submitting, you confirm that your answers are accurate. Your application will be shared with authorised Mirage application reviewers in the team's private Discord channel. Please don't include passwords or other sensitive account details.</small>
+      </form>
+      <p><a href="/forms/">← Back to all applications</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><img src="../assets/mirage-logo.png" alt=""><div><b>Mirage</b><span>Productions</span></div></div>
+    <div class="footer-actions"><a href="/">Home</a><a href="/forms/">Forms</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/legal/">Legal & Policies</a><a href="/legal/#privacy" data-cookie-settings>Cookie settings</a></div>
+    <div class="official-links"><b>Official Links</b><a href="https://miragesmp.org/" target="_blank" rel="noopener">Website</a><a href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord</a></div>
+    <div class="official-emails"><b>Contact</b><a href="mailto:applications@miragesmp.org">applications@miragesmp.org</a><a href="mailto:staff@miragesmp.org">staff@miragesmp.org</a></div>
+    <small>© <span id="year"></span> Mirage Productions. Minecraft is a trademark of Mojang Studios.</small>
+  </footer>
+
+  <script>
+  (() => {
+    const form = document.getElementById("moderatorApplicationForm");
+    if (!form) return;
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      let status = document.getElementById("applicationStatus");
+      if (!status) {
+        status = document.createElement("p");
+        status.id = "applicationStatus";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        form.querySelector('button[type="submit"]').insertAdjacentElement("beforebegin", status);
+      }
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = true;
+      status.textContent = "Sending your application…";
+      try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        const response = await fetch("https://mirage-applications-api.soobiem13.workers.dev/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error(result.error || "We couldn't send your application. Please try again.");
+        status.textContent = "Application sent successfully! Thank you for applying to Mirage Productions.";
+        form.reset();
+      } catch (error) {
+        status.textContent = error.message || "We couldn't send your application. Please try again.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+  </script>
+  <script src="../app.js"></script>
+</body>
+</html>
