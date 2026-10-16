@@ -79,8 +79,9 @@ export default {
     // Honeypot: silently accept obvious automated spam without forwarding it.
     if (clean(input._honeypot, 200)) return json({ ok: true }, 200, origin);
 
-    const role = clean(input.Role, 80);
-    if (!Object.hasOwn(ROLE_COLORS, role)) return json({ ok: false, error: "Please choose a valid application role." }, 400, origin);
+    const submittedRole = clean(input.Role, 80);
+    const role = Object.keys(ROLE_COLORS).find(name => name.toLowerCase() === submittedRole.toLowerCase());
+    if (!role) return json({ ok: false, error: "Please choose a valid application role." }, 400, origin);
 
     const fields = { Role: role };
     for (const [name, max] of Object.entries(FIELD_LIMITS)) {
