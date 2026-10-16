@@ -3,6 +3,7 @@ const ROLE_COLORS = {
   Trusted: 0x57F287,
   Builder: 0xFEE75C,
   "Script Writer": 0xEB459E,
+  Moderator: 0xED4245,
 };
 
 const FIELD_LIMITS = {
@@ -20,6 +21,11 @@ const FIELD_LIMITS = {
   Teamwork: 1200,
   Application: 3000,
   "Additional Information": 1500,
+  "Past Staff Experience": 1800,
+  "Moderation Experience": 1800,
+  "Scenario Response": 1800,
+  "Conflict Handling": 1500,
+  "Why Moderator": 1500,
 };
 
 const INLINE_FIELDS = new Set(["Minecraft Username", "Discord", "Age", "Role"]);
@@ -91,7 +97,10 @@ export default {
     if (!Number.isInteger(age) || age < 13 || age > 99) {
       return json({ ok: false, error: "Please enter a valid age." }, 400, origin);
     }
-    if (role === "Script Writer") {
+    if (role === "Moderator") {
+      const required = ["Timezone", "Availability", "Past Staff Experience", "Moderation Experience", "Scenario Response", "Conflict Handling", "Why Moderator"];
+      if (required.some(name => !fields[name])) return json({ ok: false, error: "Please complete all required Moderator fields." }, 400, origin);
+    } else if (role === "Script Writer") {
       const required = ["Timezone", "Availability", "Writing Experience", "Why Script Writer", "Story Approach", "Writing Sample", "Teamwork"];
       if (required.some(name => !fields[name])) return json({ ok: false, error: "Please complete all required Script Writer fields." }, 400, origin);
     } else if (!fields.Application) {
