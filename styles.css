@@ -145,3 +145,47 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
 @keyframes roleFieldsIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes formGlow{to{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.apply-section .section-head,.application-form,.application-form label,.role-extra-fields:not([hidden]),.role-intro,#applicationStatus{animation:none!important}.role-tab,.application-form input,.application-form textarea,.application-form button[type="submit"]{transition:none!important}.role-tab:hover,.role-tab.selected,.application-form input:focus,.application-form textarea:focus,.application-form button[type="submit"]:hover{transform:none!important}.role-tab:before,.application-form button[type="submit"]:after{display:none}}
+
+
+/* ===== Responsive navigation and aligned creator grid ===== */
+.creator-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.creator-card{min-width:0;height:100%}
+.creator-info{min-width:0}
+.creator-info>div:first-child{min-width:0}
+.creator-info b{overflow-wrap:anywhere}
+@media(max-width:900px){
+  .creator-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .topbar{height:auto;min-height:74px;flex-wrap:wrap;gap:12px 18px;padding-top:12px;padding-bottom:12px}
+  .topbar nav{display:flex!important;order:3;width:100%;flex-wrap:wrap;justify-content:center;gap:10px 22px;padding:8px 0 2px}
+  .topbar nav a{padding:7px 0;font-size:12px}
+  .topbar .brand{margin-right:auto}
+  .topbar .discord{flex:0 0 auto}
+}
+@media(max-width:560px){
+  .topbar{padding-left:4vw;padding-right:4vw;gap:10px}
+  .topbar nav{justify-content:flex-start;gap:7px 17px}
+  .topbar nav a{font-size:12px}
+  .topbar .brand img{width:32px;height:42px}
+  .topbar .brand b{font-size:15px}
+  .topbar .discord{padding:9px 10px;font-size:11px}
+  .creator-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .skin-wrap{height:240px}
+  .creator-info{flex-direction:row;align-items:center}
+  .creator-links{width:auto;margin-left:auto}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .role-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .role-tab{padding:11px 8px;font-size:12px}
+  .application-form{padding:16px}
+  .role-extra-fields{padding:15px}
+  .section{padding:48px 0 64px}
+  .status-page,.updates-page{padding:48px 0 64px}
+  .policy{padding:20px}
+  .policy-banner{max-height:55vh;overflow:auto}
+}
+@media(min-width:561px) and (max-width:900px){
+  .creator-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .skin-wrap{height:220px}
+  .creator-head{width:145px;height:145px}
+  .creator-info{padding:14px;flex-wrap:wrap}
+  .creator-links a.creator-icon-link{width:32px;height:32px}
+}
