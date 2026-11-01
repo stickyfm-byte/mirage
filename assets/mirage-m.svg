@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="fill" x1="0" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".48" stop-color="#d9f5ff"/>
+      <stop offset="1" stop-color="#79c9f5"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#08f4ff"/>
+      <stop offset=".45" stop-color="#194fff"/>
+      <stop offset="1" stop-color="#061b76"/>
+    </linearGradient>
+    <filter id="shadow" x="-25%" y="-20%" width="150%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dy="12"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".55"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" stroke-linejoin="round">
+    <path d="M 64 392 L 108 110 Q 113 76 145 76 L 184 76 Q 212 76 220 108 L 256 232 L 300 109 Q 310 76 340 76 L 376 76 Q 408 76 413 109 L 451 390 Q 456 423 425 428 L 389 434 Q 357 438 352 405 L 331 250 L 288 354 Q 277 381 254 381 Q 232 381 221 354 L 184 251 L 162 405 Q 157 435 127 432 L 91 427 Q 59 423 64 392 Z" fill="url(#fill)" stroke="#08eaff" stroke-width="18"/>
+    <path d="M 64 392 L 108 110 Q 113 76 145 76 L 184 76 Q 212 76 220 108 L 256 232 L 300 109 Q 310 76 340 76 L 376 76 Q 408 76 413 109 L 451 390 Q 456 423 425 428 L 389 434 Q 357 438 352 405 L 331 250 L 288 354 Q 277 381 254 381 Q 232 381 221 354 L 184 251 L 162 405 Q 157 435 127 432 L 91 427 Q 59 423 64 392 Z" fill="url(#fill)" stroke="#102fae" stroke-width="11"/>
+    <path d="M 89 389 L 128 119 Q 131 105 147 105 L 179 105 Q 190 105 194 122 L 248 304 L 313 122 Q 318 105 336 105 L 372 105 Q 388 105 390 122 L 428 391" fill="none" stroke="#1736bb" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 115 150 L 150 128 L 184 145 M 223 151 L 250 264 L 286 157 M 320 153 L 350 132 L 371 150" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" opacity=".68"/>
+  </g>
+</svg>
