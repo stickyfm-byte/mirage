@@ -198,3 +198,7 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
 .hero h1.hero-wordmark img{display:block;width:min(100%,430px);height:auto;object-fit:contain;object-position:left center}
 .hero h1.hero-wordmark span{display:block;margin-top:2px;font-size:clamp(58px,8vw,98px);line-height:.92;letter-spacing:-5px;color:#65eaff}
 @media(max-width:760px){.hero h1.hero-wordmark img{width:min(100%,360px)}}
+
+/* Text-only Mirage Productions branding; no logo in the site header. */
+.brand img{display:none!important}
+.brand span{display:block!important}
