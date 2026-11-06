@@ -192,3 +192,9 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
 
 /* Remove decorative eyebrow labels above page and section titles. */
 .eyebrow,.tag{display:none!important}
+
+/* Homepage hero wordmark: use the full Mirage artwork above Productions. */
+.hero h1.hero-wordmark{display:flex;flex-direction:column;align-items:flex-start;gap:0;letter-spacing:0;line-height:1;margin:18px 0 25px}
+.hero h1.hero-wordmark img{display:block;width:min(100%,430px);height:auto;object-fit:contain;object-position:left center}
+.hero h1.hero-wordmark span{display:block;margin-top:2px;font-size:clamp(58px,8vw,98px);line-height:.92;letter-spacing:-5px;color:#65eaff}
+@media(max-width:760px){.hero h1.hero-wordmark img{width:min(100%,360px)}}
