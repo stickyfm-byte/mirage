@@ -110,7 +110,7 @@ if(grid){
 const videoIds=[
   "hoPNEa9tVBw","cHDVYJYpFiE","3vRonNY7BSM","uKXckokWTmM","M1Fe9Z4o0c0",
   "5jlf___qFsc","hEuv1v_b45M","XOhnFGmG_Q8","8gpw4hmgqpk","bkAkwNIf_jg","WIKkHbfah8g",
-  "q-4HsTTwHV8"
+  "q-4HsTTwHV8","KRinQSDMH2A","Rbsx7DU7JdE"
 ];
 
 (function initVideoRail(){
