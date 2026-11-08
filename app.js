@@ -431,6 +431,17 @@ function setRole(role){
   scriptRequiredFields.forEach(field=>field.required=isWriter);
   moderatorRequiredFields.forEach(field=>field.required=isModerator);
   if(generalApplication) generalApplication.required=!isWriter&&!isModerator;
+  // Hidden role sections must not submit: Script Writer and Moderator share field names
+  // (Timezone, Availability), and the hidden copy would overwrite the visible answers.
+  [scriptWriterFields,moderatorFields].forEach(sec=>{
+    if(sec) sec.querySelectorAll("input,textarea,select").forEach(fld=>{fld.disabled=sec.hidden;});
+  });
+  const applyAs=document.getElementById("applyAs");
+  if(applyAs) applyAs.textContent=role;
+  const legend=document.getElementById("roleLegend"),sub=document.getElementById("roleSub");
+  if(legend) legend.textContent=isWriter?"Writing experience":isModerator?"Staff experience":"Your application";
+  if(sub) sub.textContent=isWriter||isModerator?"":"Tell us about yourself, your experience and your availability.";
+  if(sub) sub.hidden=isWriter||isModerator;
   if(generalApplicationLabel) generalApplicationLabel.style.display=(isWriter||isModerator)?"none":"block";
 }
 roleTabs.forEach(btn=>btn.addEventListener("click",()=>setRole(btn.dataset.role)));
@@ -468,3 +479,65 @@ if("IntersectionObserver" in window){
 }else{
   revealTargets.forEach(el=>el.classList.add("in-view"));
 }
+
+
+// ---------------------------------------------------------------------------
+// Forms: character counters + draft saving (answers only; never email/age/IDs)
+// ---------------------------------------------------------------------------
+(function formExtras(){
+  const form=document.getElementById("applicationForm");
+  if(!form) return;
+  const KEY="mirage-application-draft";
+  const areas=[...form.querySelectorAll("textarea")];
+  areas.forEach(t=>{
+    const c=document.createElement("span");c.className="count";c.setAttribute("aria-hidden","true");
+    t.insertAdjacentElement("afterend",c);
+    const upd=()=>{c.textContent=t.value.length?t.value.length+" characters":"";};
+    t.addEventListener("input",upd);t._upd=upd;
+  });
+  const note=document.getElementById("draftNote");
+  let timer;
+  const save=()=>{
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      try{
+        const d={role:document.getElementById("roleField")?.value,a:{}};
+        areas.forEach(t=>{if(t.value.trim()) d.a[t.name+"|"+areas.indexOf(t)]=t.value;});
+        if(Object.keys(d.a).length){localStorage.setItem(KEY,JSON.stringify(d));if(note)note.hidden=false;}
+        else{localStorage.removeItem(KEY);if(note)note.hidden=true;}
+      }catch(_){}
+    },500);
+  };
+  form.addEventListener("input",e=>{if(e.target.tagName==="TEXTAREA") save();});
+  window.clearApplicationDraft=()=>{try{localStorage.removeItem(KEY);}catch(_){} if(note)note.hidden=true; areas.forEach(t=>t._upd&&t._upd());};
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(d&&d.a){
+      const tab=[...document.querySelectorAll(".role-tab")].find(x=>x.dataset.role===d.role);
+      if(tab) tab.click();
+      Object.entries(d.a).forEach(([k,v])=>{const t=areas[+k.split("|")[1]];if(t&&t.name===k.split("|")[0]){t.value=v;t._upd&&t._upd();}});
+      if(note)note.hidden=false;
+    }
+  }catch(_){}
+})();
+
+// Mark the current page in the nav and add a status summary on /status/
+(function pageExtras(){
+  const path=location.pathname.replace(/index\.html$/,"");
+  document.querySelectorAll(".topbar nav a").forEach(a=>{
+    const h=a.getAttribute("href");
+    if(h&&h!=="/"&&path.startsWith(h)){a.classList.add("active");a.setAttribute("aria-current","page");}
+    if(h==="/"&&path==="/"){a.classList.add("active");a.setAttribute("aria-current","page");}
+  });
+  contentReady.then(()=>{
+    const list=document.querySelector(".system-list");
+    if(!list||document.querySelector(".status-summary")) return;
+    const dots=[...list.querySelectorAll(".status-dot")];
+    const bad=dots.some(d=>d.classList.contains("bad")),warn=dots.some(d=>d.classList.contains("warn"));
+    const s=document.createElement("div");
+    s.className="status-summary"+(bad?" bad":warn?" warn":"");
+    s.setAttribute("role","status");
+    s.innerHTML='<span class="status-dot'+(bad?" bad":warn?" warn":"")+'"></span><b>'+(bad?"Some systems are down":warn?"Some systems have issues":"All systems operational")+"</b>";
+    list.insertAdjacentElement("beforebegin",s);
+  });
+})();
