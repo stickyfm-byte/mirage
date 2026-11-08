@@ -202,3 +202,11 @@ footer{background:rgba(1,11,22,.92);border-top:1px solid rgba(105,229,255,.1);pa
 /* Text-only Mirage Productions branding; no logo in the site header. */
 .brand img{display:none!important}
 .brand span{display:block!important}
+
+/* Mirage Editor: status colours and announcement banner */
+.status-dot.warn{background:#f1c76c;box-shadow:0 0 10px rgba(241,199,108,.65)}
+.status-dot.bad{background:#ff7b7b;box-shadow:0 0 10px rgba(255,123,123,.65)}
+.announce-bar{position:relative;z-index:31;display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 5vw;background:#0b70a6;color:#effcff;font-size:13px;font-weight:600;text-align:center}
+.announce-bar[hidden]{display:none}
+.announce-bar a{text-decoration:underline;font-weight:800}
+.hero h1 span.h1-plain{color:inherit}

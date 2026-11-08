@@ -1,8 +1,100 @@
-const creators=[
+let creators=[
 {name:"ykni", lookup:"ykni", uuid:"bf2501d592d9430884f66f7fd6c61735", skin:"assets/ykni-skin.png", profile:"https://namemc.com/profile/ykni.8", yt:"https://www.youtube.com/@yknimc"},
 {name:"NaltRexo", lookup:"NaltRexo", profile:"https://namemc.com/profile/NaltRexo.2", yt:"https://www.youtube.com/@naltrexi"},
 {name:"Kingstxn__", lookup:"Kingstxn__", profile:"https://namemc.com/profile/Kingstxn__.1", yt:"https://www.youtube.com/@Kingston_isGud"}
 ];
+
+// ---------------------------------------------------------------------------
+// Editable content. Everything the Mirage Editor (/admin/) can change lives in
+// /content.json. The HTML and the defaults below still work if it can't load.
+// ---------------------------------------------------------------------------
+let SERVER_IP="mc.miragesmp.org";
+let RAIL_SPEED=44;
+const getPath=(o,p)=>p.split(".").reduce((x,k)=>x==null?x:x[k],o);
+const safeUrl=u=>/^(https?:|mailto:|\/|#|\.\.?\/|assets\/)/i.test(u||"")?u:"#";
+function el(tag,props,kids){
+  const n=document.createElement(tag);
+  Object.entries(props||{}).forEach(([k,v])=>{ if(k==="text") n.textContent=v; else n.setAttribute(k,v); });
+  (kids||[]).forEach(c=>n.appendChild(c));
+  return n;
+}
+function applyContent(c){
+  if(!c) return;
+  document.querySelectorAll("[data-c]").forEach(n=>{
+    const v=getPath(c,n.dataset.c);
+    if(typeof v==="string" && v!=="") n.textContent=v;
+  });
+  document.querySelectorAll("[data-c-href]").forEach(n=>{
+    const v=getPath(c,n.dataset.cHref);
+    if(typeof v==="string" && v) n.setAttribute("href",safeUrl(v));
+  });
+  if(c.site?.serverIp) SERVER_IP=c.site.serverIp;
+  if(c.site?.discordUrl) document.querySelectorAll('a[href^="https://discord.gg/"]').forEach(a=>a.setAttribute("href",safeUrl(c.site.discordUrl)));
+  if(Number.isFinite(c.videoRail?.speed)) RAIL_SPEED=c.videoRail.speed;
+
+  // Announcement banner (homepage only)
+  const bar=document.getElementById("announceBar");
+  const an=c.site?.announcement;
+  if(bar && an?.enabled && an.text){
+    bar.textContent="";
+    bar.appendChild(el("span",{text:an.text}));
+    if(an.link) bar.appendChild(el("a",{href:safeUrl(an.link),target:"_blank",rel:"noopener",text:an.linkLabel||"Learn more ↗"}));
+    bar.hidden=false;
+  }
+
+  // Disclaimer paragraphs
+  const dis=document.getElementById("disclaimerBody");
+  if(dis && Array.isArray(c.disclaimer?.paragraphs) && c.disclaimer.paragraphs.length){
+    dis.textContent="";
+    c.disclaimer.paragraphs.forEach(t=>dis.appendChild(el("p",{text:t})));
+  }
+
+  // Status rows: homepage grid + status page list
+  if(Array.isArray(c.status?.items) && c.status.items.length){
+    const row=(i,cls)=>{
+      const dot=el("span",{class:"status-dot"+(i.level==="warn"?" warn":i.level==="bad"?" bad":"")});
+      return cls==="grid"
+        ? el("div",{},[dot,el("b",{text:i.name}),el("span",{text:i.label})])
+        : el("div",{class:"system-row"},[dot,el("b",{text:i.name}),el("span",{text:i.label})]);
+    };
+    const g=document.querySelector(".status-grid");
+    if(g){ g.textContent=""; c.status.items.forEach(i=>g.appendChild(row(i,"grid"))); }
+    const l=document.querySelector(".system-list");
+    if(l){ l.textContent=""; c.status.items.forEach(i=>l.appendChild(row(i,"list"))); }
+  }
+
+  // Changelog
+  const ul=document.querySelector(".update-list");
+  if(ul && Array.isArray(c.updates?.items)){
+    ul.textContent="";
+    c.updates.items.forEach(u=>ul.appendChild(el("article",{class:"update-card"},[el("time",{text:u.date||""}),el("h2",{text:u.title||""}),el("p",{text:u.body||""})])));
+  }
+
+  // Footer (every page)
+  const f=c.footer;
+  if(f){
+    const ol=document.querySelector(".official-links");
+    if(ol && Array.isArray(f.officialLinks)){
+      ol.textContent="";
+      ol.appendChild(el("b",{text:"Official Links"}));
+      f.officialLinks.forEach(l=>ol.appendChild(el("a",{href:safeUrl(l.url),target:"_blank",rel:"noopener",text:l.label})));
+    }
+    const oe=document.querySelector(".official-emails");
+    if(oe && Array.isArray(f.emails)){
+      oe.textContent="";
+      oe.appendChild(el("b",{text:"Contact"}));
+      f.emails.forEach(m=>oe.appendChild(el("a",{href:"mailto:"+m,text:m})));
+    }
+    const sm=document.querySelector("footer small");
+    if(sm && f.copyright){ sm.textContent=""; sm.append("© ",el("span",{id:"year",text:String(new Date().getFullYear())})," "+f.copyright); }
+  }
+  if(Array.isArray(c.creators) && c.creators.length) creators=c.creators;
+  if(Array.isArray(c.videos)){
+    const ids=c.videos.map(v=>typeof v==="string"?v:v.id).filter(Boolean);
+    if(ids.length) videoIds=ids;
+  }
+}
+const contentReady=fetch("/content.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
 
 const year=document.getElementById("year");
 if(year) year.textContent=new Date().getFullYear();
@@ -15,10 +107,10 @@ if(copyIpButton){
     const original=button.dataset.originalText || "Copy";
     try{
       if(navigator.clipboard && window.isSecureContext){
-        await navigator.clipboard.writeText("mc.miragesmp.org");
+        await navigator.clipboard.writeText(SERVER_IP);
       }else{
         const area=document.createElement("textarea");
-        area.value="mc.miragesmp.org";
+        area.value=SERVER_IP;
         area.setAttribute("readonly","");
         area.style.position="fixed";
         area.style.opacity="0";
@@ -48,7 +140,7 @@ async function serverStatus(){
   // Only run the Minecraft request when the homepage server panel exists.
   if(!state && !online && !max) return;
   try{
-    const r=await fetch("https://api.mcsrvstat.us/3/mc.miragesmp.org",{cache:"no-store"});
+    const r=await fetch("https://api.mcsrvstat.us/3/"+encodeURIComponent(SERVER_IP),{cache:"no-store"});
     if(!r.ok) throw new Error("Status request failed");
     const d=await r.json();
     if(d.online){
@@ -67,37 +159,40 @@ async function serverStatus(){
     if(state){state.textContent="Unavailable";state.style.color="#f1c76c";}
   }
 }
-serverStatus();
+contentReady.then(()=>serverStatus());
 if(document.getElementById("serverState") || document.getElementById("playerCount") || document.getElementById("playerMax")){
   setInterval(serverStatus,30000);
 }
 
 const grid=document.getElementById("creatorGrid");
 function headUrl(creator){
-  if(creator.name === "ykni") return "assets/ykni-head.png";
-  return `https://mc-heads.net/avatar/${encodeURIComponent(creator.lookup)}/256`;
+  if(creator.head) return creator.head;
+  return `https://mc-heads.net/avatar/${encodeURIComponent(creator.lookup||creator.name)}/256`;
 }
-if(grid){
+function renderCreators(){
+  if(!grid) return;
+  grid.textContent="";
   creators.forEach(creator=>{
     const card=document.createElement("article");
     card.className="creator-card";
     const src=headUrl(creator);
-    const fallback=creator.name === "ykni" ? "" : ` onerror="this.onerror=null;this.src='https://minotar.net/avatar/${encodeURIComponent(creator.lookup)}/256'"`;
+    const fallback=creator.head ? "" : ` onerror="this.onerror=null;this.src='https://minotar.net/avatar/${encodeURIComponent(creator.lookup||creator.name)}/256'"`;
     card.innerHTML=`
       <div class="skin-wrap head-wrap">
         <div class="head-glow"></div>
-        <img class="creator-head" src="${src}" alt="${creator.name} Minecraft head" loading="lazy" draggable="false"${fallback}>
+        <img class="creator-head" src="${src}" alt="${esc(creator.name)} Minecraft head" loading="lazy" draggable="false"${fallback}>
       </div>
       <div class="creator-info">
-        <div><b>${creator.name}</b><small>Minecraft creator</small></div>
+        <div><b>${esc(creator.name)}</b><small>${esc(creator.role||"Minecraft creator")}</small></div>
         <div class="creator-links" aria-label="Creator links">
-          <a class="creator-icon-link" href="${creator.profile}" target="_blank" rel="noopener" aria-label="${creator.name} on NameMC"><img src="assets/namemc-logo.png" alt="NameMC" draggable="false"></a>
-          <a class="creator-icon-link" href="${creator.yt}" target="_blank" rel="noopener" aria-label="${creator.name} on YouTube"><img src="assets/youtube-logo.png" alt="YouTube" draggable="false"></a>
+          <a class="creator-icon-link" href="${safeUrl(creator.profile)}" target="_blank" rel="noopener" aria-label="${esc(creator.name)} on NameMC"><img src="assets/namemc-logo.png" alt="NameMC" draggable="false"></a>
+          <a class="creator-icon-link" href="${safeUrl(creator.yt)}" target="_blank" rel="noopener" aria-label="${esc(creator.name)} on YouTube"><img src="assets/youtube-logo.png" alt="YouTube" draggable="false"></a>
         </div>
       </div>`;
     grid.appendChild(card);
   });
 }
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 
 // ---------------------------------------------------------------------------
 // Video rail: a smooth, endlessly looping strip of thumbnails.
@@ -107,13 +202,13 @@ if(grid){
 // - Thumbnails start on the always-available hqdefault image and quietly
 //   upgrade to maxresdefault when it exists, so cards never show a gap.
 // ---------------------------------------------------------------------------
-const videoIds=[
+let videoIds=[
   "hoPNEa9tVBw","cHDVYJYpFiE","3vRonNY7BSM","uKXckokWTmM","M1Fe9Z4o0c0",
   "5jlf___qFsc","hEuv1v_b45M","XOhnFGmG_Q8","8gpw4hmgqpk","bkAkwNIf_jg","WIKkHbfah8g",
   "q-4HsTTwHV8","KRinQSDMH2A","Rbsx7DU7JdE"
 ];
 
-(function initVideoRail(){
+function initVideoRail(){
   const rail=document.getElementById("videoRail");
   const track=document.getElementById("videoTrack");
   if(!rail || !track) return;
@@ -195,7 +290,7 @@ const videoIds=[
 
   // ---- Motion -----------------------------------------------------------
   const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
-  const CRUISE=()=>reduceMotion.matches?0:44;   // px per second, moving left
+  const CRUISE=()=>reduceMotion.matches?0:RAIL_SPEED;   // px per second, moving left
   let v=0;                    // current speed (px/s, positive = moving left)
   let hovering=false, focused=false, dragging=false;
   let raf=0, last=0;
@@ -307,7 +402,13 @@ const videoIds=[
   window.addEventListener("resize",relayout);
   window.addEventListener("load",relayout);
   relayout();
-})();
+}
+
+contentReady.then(c=>{
+  applyContent(c);
+  renderCreators();
+  initVideoRail();
+});
 
 // Application role switching. This is safe on every page; controls only exist on /forms/.
 const roleTabs=document.querySelectorAll(".role-tab");

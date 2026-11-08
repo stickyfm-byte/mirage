@@ -30,6 +30,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Mirage Productions","url":"https://miragesmp.org/","logo":"https://miragesmp.org/assets/mirage-m.svg","sameAs":["https://discord.gg/mirageevents"]}</script>
 </head>
 <body>
+  <div id="announceBar" class="announce-bar" hidden></div>
   <div class="gradient-bg" aria-hidden="true"></div>
 
   <header class="topbar">
@@ -41,17 +42,17 @@
   <main id="top">
     <section class="hero">
       <div class="hero-copy">
-        <span class="tag">MIRAGE PRODUCTIONS</span>
-        <h1>Mirage<br><span>Productions</span></h1>
-        <p>Welcome! We're a group of creators making original Minecraft events, videos and community projects together, and we'd love to have you along.</p>
+        <span class="tag" data-c="hero.tag">MIRAGE PRODUCTIONS</span>
+        <h1><span data-c="hero.titleLine1" class="h1-plain">Mirage</span><br><span data-c="hero.titleLine2">Productions</span></h1>
+        <p data-c="hero.text">Welcome! We're a group of creators making original Minecraft events, videos and community projects together, and we'd love to have you along.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#videos">Watch videos</a>
+          <a class="button primary" href="#videos" data-c="hero.buttonLabel">Watch videos</a>
         </div>
       </div>
 
       <aside class="server-panel">
         <div class="server-top"><span class="live-dot"></span><span>MINECRAFT SERVER</span><strong id="serverState">Checking</strong></div>
-        <div class="server-ip-row"><span class="server-ip">mc.miragesmp.org</span><button class="ip-copy" id="copyIp" type="button" aria-label="Copy server IP">Copy</button></div>
+        <div class="server-ip-row"><span class="server-ip" data-c="site.serverIp">mc.miragesmp.org</span><button class="ip-copy" id="copyIp" type="button" aria-label="Copy server IP">Copy</button></div>
         
         <div class="server-stats">
           <div><b id="playerCount">...</b><span>players online</span></div>
@@ -63,7 +64,7 @@
 
     <section id="videos" class="section videos-section">
       <div class="section-head">
-        <div><span class="eyebrow">VIDEOS</span><h2>Our Videos</h2></div>
+        <div><span class="eyebrow" data-c="sections.videosEyebrow">VIDEOS</span><h2 data-c="sections.videosTitle">Our Videos</h2></div>
         
       </div>
       <div class="vrail" id="videoRail" role="region" aria-label="Mirage videos">
@@ -73,20 +74,20 @@
 
     <section id="creators" class="section creators-section">
       <div class="section-head">
-        <div><span class="eyebrow">CREATORS</span><h2>Meet our Creators</h2></div>
+        <div><span class="eyebrow" data-c="sections.creatorsEyebrow">CREATORS</span><h2 data-c="sections.creatorsTitle">Meet our Creators</h2></div>
         
       </div>
       <div class="creator-grid" id="creatorGrid"></div>
     </section>
 
     <section id="status" class="section mini-status">
-      <div class="section-head"><div><span class="eyebrow">SYSTEM STATUS</span><h2>Mirage Systems</h2></div><a class="button secondary" href="/status/">View status ↗</a></div>
+      <div class="section-head"><div><span class="eyebrow">SYSTEM STATUS</span><h2 data-c="status.homeTitle">Mirage Systems</h2></div><a class="button secondary" href="/status/">View status ↗</a></div>
       <div class="status-grid"><div><span class="status-dot"></span><b>Website</b><span>Operational</span></div><div><span class="status-dot"></span><b>Minecraft Server</b><span>Operational</span></div><div><span class="status-dot"></span><b>Applications</b><span>Open</span></div><div><span class="status-dot"></span><b>Discord</b><span>Operational</span></div></div>
     </section>
 
     <section id="info" class="legal-grid">
-      <article class="info-card"><span class="eyebrow">CONTENT DISCLAIMER</span><h2>Content Disclaimer</h2><p>Our actors and POV creators are not highly trained professionals, and they may make errors or mistakes within their videos, performances, gameplay or actions.</p><p>Please do not treat them with disrespect. Patience and constructive feedback help everyone improve and keep Mirage a positive creative space.</p><p>Mirage content is created for entertainment and storytelling. Some scenes, characters and events may be fictional or performed specifically for a production.</p></article>
-      <article class="info-card"><span class="eyebrow">EULA</span><h2>End User License Agreement</h2><p>Read the complete Mirage agreement in the hosted document.</p><a class="button secondary" href="https://drive.google.com/file/d/10DJaPtVF-ySPmyWuYOCZIGuGw0McJz67/view?usp=sharing" target="_blank" rel="noopener">Open EULA ↗</a></article>
+      <article class="info-card" id="disclaimerCard"><span class="eyebrow">CONTENT DISCLAIMER</span><h2 data-c="disclaimer.title">Content Disclaimer</h2><div id="disclaimerBody"><p>Our actors and POV creators are not highly trained professionals, and they may make errors or mistakes within their videos, performances, gameplay or actions.</p><p>Please do not treat them with disrespect. Patience and constructive feedback help everyone improve and keep Mirage a positive creative space.</p><p>Mirage content is created for entertainment and storytelling. Some scenes, characters and events may be fictional or performed specifically for a production.</p></div></article>
+      <article class="info-card"><span class="eyebrow">EULA</span><h2 data-c="eula.title">End User License Agreement</h2><p data-c="eula.text">Read the complete Mirage agreement in the hosted document.</p><a class="button secondary" data-c="eula.buttonLabel" data-c-href="eula.url" href="https://drive.google.com/file/d/10DJaPtVF-ySPmyWuYOCZIGuGw0McJz67/view?usp=sharing" target="_blank" rel="noopener">Open EULA ↗</a></article>
     </section>
   </main>
 

@@ -1,0 +1,91 @@
+{
+  "site": {
+    "serverIp": "mc.miragesmp.org",
+    "discordUrl": "https://discord.gg/mirageevents",
+    "announcement": { "enabled": false, "text": "", "link": "", "linkLabel": "" }
+  },
+  "hero": {
+    "tag": "MIRAGE PRODUCTIONS",
+    "titleLine1": "Mirage",
+    "titleLine2": "Productions",
+    "text": "Welcome! We're a group of creators making original Minecraft events, videos and community projects together, and we'd love to have you along.",
+    "buttonLabel": "Watch videos"
+  },
+  "sections": {
+    "videosEyebrow": "VIDEOS",
+    "videosTitle": "Our Videos",
+    "creatorsEyebrow": "CREATORS",
+    "creatorsTitle": "Meet our Creators"
+  },
+  "videos": [
+    { "id": "hoPNEa9tVBw", "title": "" },
+    { "id": "cHDVYJYpFiE", "title": "" },
+    { "id": "3vRonNY7BSM", "title": "" },
+    { "id": "uKXckokWTmM", "title": "" },
+    { "id": "M1Fe9Z4o0c0", "title": "" },
+    { "id": "5jlf___qFsc", "title": "" },
+    { "id": "hEuv1v_b45M", "title": "" },
+    { "id": "XOhnFGmG_Q8", "title": "" },
+    { "id": "8gpw4hmgqpk", "title": "" },
+    { "id": "bkAkwNIf_jg", "title": "" },
+    { "id": "WIKkHbfah8g", "title": "" },
+    { "id": "q-4HsTTwHV8", "title": "" },
+    { "id": "KRinQSDMH2A", "title": "" },
+    { "id": "Rbsx7DU7JdE", "title": "" }
+  ],
+  "videoRail": { "speed": 44 },
+  "creators": [
+    { "name": "ykni", "lookup": "ykni", "uuid": "bf2501d592d9430884f66f7fd6c61735", "head": "assets/ykni-head.png", "profile": "https://namemc.com/profile/ykni.8", "yt": "https://www.youtube.com/@yknimc", "role": "Minecraft creator" },
+    { "name": "NaltRexo", "lookup": "NaltRexo", "uuid": "", "head": "", "profile": "https://namemc.com/profile/NaltRexo.2", "yt": "https://www.youtube.com/@naltrexi", "role": "Minecraft creator" },
+    { "name": "Kingstxn__", "lookup": "Kingstxn__", "uuid": "", "head": "", "profile": "https://namemc.com/profile/Kingstxn__.1", "yt": "https://www.youtube.com/@Kingston_isGud", "role": "Minecraft creator" }
+  ],
+  "status": {
+    "homeTitle": "Mirage Systems",
+    "pageTitle": "System Status",
+    "pageText": "Here's how everything at Mirage is running right now, from the website to the server and Discord.",
+    "items": [
+      { "name": "Website", "label": "Operational", "level": "ok" },
+      { "name": "Minecraft Server", "label": "Operational", "level": "ok" },
+      { "name": "Applications", "label": "Open", "level": "ok" },
+      { "name": "Discord", "label": "Operational", "level": "ok" }
+    ]
+  },
+  "disclaimer": {
+    "title": "Content Disclaimer",
+    "paragraphs": [
+      "Our actors and POV creators are not highly trained professionals, and they may make errors or mistakes within their videos, performances, gameplay or actions.",
+      "Please do not treat them with disrespect. Patience and constructive feedback help everyone improve and keep Mirage a positive creative space.",
+      "Mirage content is created for entertainment and storytelling. Some scenes, characters and events may be fictional or performed specifically for a production."
+    ]
+  },
+  "eula": {
+    "title": "End User License Agreement",
+    "text": "Read the complete Mirage agreement in the hosted document.",
+    "buttonLabel": "Open EULA ↗",
+    "url": "https://drive.google.com/file/d/10DJaPtVF-ySPmyWuYOCZIGuGw0McJz67/view?usp=sharing"
+  },
+  "updates": {
+    "title": "What's New",
+    "text": "The latest Mirage launches, changes and production updates, all in one place.",
+    "items": [
+      { "date": "September 26, 2026", "title": "Script Writer Applications Opened", "body": "Mirage opened recruitment for Script Writers to help develop event stories, scenes and production material." },
+      { "date": "September 20, 2026", "title": "Mirage Events Website Launched", "body": "The official Mirage website went live with creator information, videos, applications and project information." },
+      { "date": "September 15, 2026", "title": "New Production Team Structure Introduced", "body": "Mirage introduced a clearer production structure for creators, actors, trusted members, builders and staff." }
+    ]
+  },
+  "footer": {
+    "officialLinks": [
+      { "label": "Website", "url": "https://miragesmp.org/" },
+      { "label": "Discord", "url": "https://discord.gg/mirageevents" },
+      { "label": "ykni", "url": "https://www.youtube.com/@yknimc" },
+      { "label": "Nalt", "url": "https://www.youtube.com/@naltrexi" },
+      { "label": "Kingston", "url": "https://www.youtube.com/@Kingston_isGud" }
+    ],
+    "emails": [
+      "contact@miragesmp.org",
+      "applications@miragesmp.org",
+      "staff@miragesmp.org"
+    ],
+    "copyright": "Mirage Productions. Minecraft is a trademark of Mojang Studios."
+  }
+}

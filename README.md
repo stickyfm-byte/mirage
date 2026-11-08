@@ -7,7 +7,7 @@ Single-page Mirage Productions website.
 - Supplied Mirage logo
 - Smooth eased blue gradient background with slow-drifting colour glow and fine grain (no banding)
 - Live player count for mc.miragesmp.org
-- Endless video rail (13 videos): thumbnails only, eased hover slow-down, drag/swipe with momentum, staggered entrance. Add a video by appending its YouTube ID to `videoIds` in app.js
+- Endless video rail (13 videos): thumbnails only, eased hover slow-down, drag/swipe with momentum, staggered entrance. Videos, text, creators, status and changelog are edited in the Mirage Editor at `/admin/` (see EDITOR.md); they live in `content.json`
 - Four creator cards with independent 3D Minecraft skin viewers
 - Automatic skin rotation
 - NameMC and YouTube links for each creator
