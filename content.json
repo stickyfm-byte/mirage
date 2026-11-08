@@ -182,12 +182,12 @@
   "footer": {
     "officialLinks": [
       {
-        "label": "Website",
-        "url": "https://miragesmp.org/"
-      },
-      {
         "label": "Discord",
         "url": "https://discord.gg/mirageevents"
+      },
+      {
+        "label": "Support",
+        "url": "https://support.miragesmp.org"
       },
       {
         "label": "ykni",
