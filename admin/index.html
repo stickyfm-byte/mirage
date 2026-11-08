@@ -52,7 +52,7 @@ a{color:var(--cyan)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 label.f{display:block;margin-bottom:14px}
 label.f>span{display:block;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-input[type=text],input[type=url],input[type=number],textarea,select{width:100%;background:rgba(1,14,26,.7);border:1px solid var(--line);border-radius:8px;padding:10px 12px;outline:none;transition:.15s}
+input[type=text],input[type=password],input[type=url],input[type=number],textarea,select{width:100%;background:rgba(1,14,26,.7);border:1px solid var(--line);border-radius:8px;padding:10px 12px;outline:none;transition:.15s}
 input:focus,textarea:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(101,234,255,.12)}
 textarea{min-height:90px;resize:vertical;line-height:1.55}
 select option{background:#06223a}
@@ -117,27 +117,9 @@ code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:5px;font-siz
 <div id="loginView" class="login" hidden>
   <div class="card">
     <h1>Mirage <span>Editor</span></h1>
-    <p class="hint">Edit the Mirage website text, video rotation, creators, status board and changelog. Changes are saved straight to the website's GitHub repository, so no database is needed.</p>
-
-    <ol class="steps">
-      <li>On GitHub open <b>Settings → Developer settings → Fine-grained tokens → Generate</b>.</li>
-      <li>Repository access: <b>Only select repositories → stickyfm-byte/mirage</b>.</li>
-      <li>Permissions: <b>Contents → Read and write</b>. Nothing else.</li>
-      <li>Paste the token below.</li>
-    </ol>
-
-    <label class="f"><span>GitHub token</span><input id="tok" type="password" autocomplete="off" placeholder="github_pat_…"></label>
-    <div class="grid2">
-      <label class="f"><span>Repository</span><input id="repo" type="text" value="stickyfm-byte/mirage"></label>
-      <label class="f"><span>Branch</span><input id="branch" type="text" value="main"></label>
-    </div>
-    <label class="check"><input id="remember" type="checkbox"> Remember token on this device</label>
-    <div class="row" style="margin-top:18px">
-      <button class="btn primary" id="loginBtn">Open editor</button>
-      <button class="btn" id="offlineBtn" title="Edit without saving to GitHub; download the JSON instead">Work offline</button>
-    </div>
+    <label class="f" style="margin-top:20px"><span>Token</span><input id="tok" type="password" autocomplete="off" placeholder="github_pat_…" autofocus></label>
+    <button class="btn primary" id="loginBtn" style="width:100%">Open editor</button>
     <p class="err" id="loginErr"></p>
-    <p class="hint" style="margin:6px 0 0">Your token is only ever sent to api.github.com from this page. Anyone without a token can open this page but can't save anything.</p>
   </div>
 </div>
 
@@ -488,13 +470,11 @@ function startEditor(data){
 }
 $("#loginBtn").addEventListener("click",async()=>{
   const btn=$("#loginBtn"),err=$("#loginErr");err.textContent="";
-  CFG={repo:$("#repo").value.trim(),branch:$("#branch").value.trim()||"main",token:$("#tok").value.trim(),offline:false};
-  if(!CFG.token||!/^[\w.-]+\/[\w.-]+$/.test(CFG.repo)){err.textContent="Enter your token and a repository like owner/name.";return}
+  CFG={repo:"stickyfm-byte/mirage",branch:"main",token:$("#tok").value.trim(),offline:false};
+  if(!CFG.token){err.textContent="Enter your token.";return}
   btn.disabled=true;btn.textContent="Connecting…";
   try{
     const data=await loadFromGitHub();
-    if($("#remember").checked){store.set("mirageTok",CFG.token);store.set("mirageRepo",CFG.repo);store.set("mirageBranch",CFG.branch)}
-    else{store.del("mirageTok")}
     startEditor(data);
   }catch(e){
     err.textContent=e.status===401?"GitHub didn't accept that token.":e.status===404?"Repository not found, or the token has no access to it.":e.message;
@@ -502,11 +482,6 @@ $("#loginBtn").addEventListener("click",async()=>{
   btn.disabled=false;btn.textContent="Open editor";
 });
 $("#tok").addEventListener("keydown",e=>{if(e.key==="Enter")$("#loginBtn").click()});
-$("#offlineBtn").addEventListener("click",async()=>{
-  CFG.offline=true;
-  let d={};try{const r=await fetch("../"+FILE,{cache:"no-store"});if(r.ok)d=await r.json()}catch(e){}
-  startEditor(d);
-});
 $("#logoutBtn").addEventListener("click",()=>{
   if(S&&ser(S)!==ORIG&&!confirm("You have unpublished changes. Sign out anyway?"))return;
   store.del("mirageTok");location.reload();
@@ -527,11 +502,8 @@ $("#importFile").addEventListener("change",async e=>{
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="s"){e.preventDefault();if(!$("#publishBtn").disabled)publish()}});
 
 (function init(){
-  const t=store.get("mirageTok");
+  store.del("mirageTok");
   $("#loginView").hidden=false;
-  if(store.get("mirageRepo"))$("#repo").value=store.get("mirageRepo");
-  if(store.get("mirageBranch"))$("#branch").value=store.get("mirageBranch");
-  if(t){$("#tok").value=t;$("#remember").checked=true}
 })();
 </script>
 </body>
