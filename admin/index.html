@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#031827">
-<title>Mirage Editor</title>
+<title>Mirage Access</title>
 <link rel="icon" href="../assets/mirage-m.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,9 +116,9 @@ code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:5px;font-siz
 <!-- ======================= LOGIN ======================= -->
 <div id="loginView" class="login" hidden>
   <div class="card">
-    <h1>Mirage <span>Editor</span></h1>
-    <label class="f" style="margin-top:20px"><span>Token</span><input id="tok" type="password" autocomplete="off" placeholder="github_pat_…" autofocus></label>
-    <button class="btn primary" id="loginBtn" style="width:100%">Open editor</button>
+    <h1>Mirage <span>Access</span></h1>
+    <label class="f" style="margin-top:20px"><span>Authorization token</span><input id="tok" type="password" autocomplete="off" autofocus></label>
+    <button class="btn primary" id="loginBtn" style="width:100%">Continue</button>
     <p class="err" id="loginErr"></p>
   </div>
 </div>
@@ -126,7 +126,7 @@ code{background:rgba(255,255,255,.07);padding:1px 6px;border-radius:5px;font-siz
 <!-- ======================= EDITOR ======================= -->
 <div id="appView" hidden>
   <div class="bar">
-    <div class="logo"><img src="../assets/mirage-m.svg" alt=""><div>Mirage Editor<small id="modeLabel">Connected</small></div></div>
+    <div class="logo"><img src="../assets/mirage-m.svg" alt=""><div>Mirage Access<small id="modeLabel"></small></div></div>
     <span class="pill" id="state">No changes</span>
     <a class="btn sm" href="/" target="_blank" rel="noopener">View site ↗</a>
     <button class="btn sm" id="dlBtn">Download JSON</button>
@@ -465,21 +465,21 @@ function startEditor(data){
     else store.del("mirageDraft");
   }
   $("#loginView").hidden=true;$("#appView").hidden=false;
-  $("#modeLabel").textContent=CFG.offline?"Offline mode":CFG.repo+" · "+CFG.branch;
+  $("#modeLabel").textContent="";
   render();
 }
 $("#loginBtn").addEventListener("click",async()=>{
   const btn=$("#loginBtn"),err=$("#loginErr");err.textContent="";
   CFG={repo:"stickyfm-byte/mirage",branch:"main",token:$("#tok").value.trim(),offline:false};
-  if(!CFG.token){err.textContent="Enter your token.";return}
-  btn.disabled=true;btn.textContent="Connecting…";
+  if(!CFG.token){err.textContent="Enter your authorization token.";return}
+  btn.disabled=true;btn.textContent="Checking…";
   try{
     const data=await loadFromGitHub();
     startEditor(data);
   }catch(e){
-    err.textContent=e.status===401?"GitHub didn't accept that token.":e.status===404?"Repository not found, or the token has no access to it.":e.message;
+    err.textContent="Access denied.";
   }
-  btn.disabled=false;btn.textContent="Open editor";
+  btn.disabled=false;btn.textContent="Continue";
 });
 $("#tok").addEventListener("keydown",e=>{if(e.key==="Enter")$("#loginBtn").click()});
 $("#logoutBtn").addEventListener("click",()=>{
