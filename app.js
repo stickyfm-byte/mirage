@@ -18,6 +18,18 @@ function el(tag,props,kids){
   (kids||[]).forEach(c=>n.appendChild(c));
   return n;
 }
+let ROLES=null;
+function buildRoleTabs(roles){
+  ROLES=roles;
+  const wrap=document.querySelector(".role-tabs");
+  if(!wrap) return;
+  wrap.textContent="";
+  roles.forEach(r=>{
+    const b=el("button",{type:"button",class:"role-tab"+(r.open===false?" closed":""),"data-role":r.name,text:r.name});
+    if(r.open===false) b.appendChild(el("small",{text:" · Closed"}));
+    wrap.appendChild(b);
+  });
+}
 function applyContent(c){
   if(!c) return;
   document.querySelectorAll("[data-c]").forEach(n=>{
@@ -88,13 +100,18 @@ function applyContent(c){
     const sm=document.querySelector("footer small");
     if(sm && f.copyright){ sm.textContent=""; sm.append("© ",el("span",{id:"year",text:String(new Date().getFullYear())})," "+f.copyright); }
   }
+  if(Array.isArray(c.forms?.roles) && c.forms.roles.length) buildRoleTabs(c.forms.roles);
   if(Array.isArray(c.creators) && c.creators.length) creators=c.creators;
   if(Array.isArray(c.videos)){
     const ids=c.videos.map(v=>typeof v==="string"?v:v.id).filter(Boolean);
     if(ids.length) videoIds=ids;
   }
 }
-const contentReady=fetch("/content.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
+const IS_PREVIEW=/[?&]preview=1/.test(location.search);
+const contentReady=(IS_PREVIEW
+  ? Promise.resolve().then(()=>{try{return JSON.parse(localStorage.getItem("mirage-preview"));}catch(_){return null;}})
+  : Promise.resolve(null)
+).then(p=>p||fetch("/content.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null));
 
 const year=document.getElementById("year");
 if(year) year.textContent=new Date().getFullYear();
@@ -408,10 +425,10 @@ contentReady.then(c=>{
   applyContent(c);
   renderCreators();
   initVideoRail();
+  initRoles();
 });
 
 // Application role switching. This is safe on every page; controls only exist on /forms/.
-const roleTabs=document.querySelectorAll(".role-tab");
 const roleField=document.getElementById("roleField");
 const subjectField=document.getElementById("subjectField");
 const scriptWriterFields=document.getElementById("scriptWriterFields");
@@ -421,7 +438,12 @@ const generalApplicationLabel=document.getElementById("generalApplicationLabel")
 const scriptRequiredFields=scriptWriterFields ? scriptWriterFields.querySelectorAll("[data-script-required]") : [];
 const moderatorRequiredFields=moderatorFields ? moderatorFields.querySelectorAll("[data-moderator-required]") : [];
 function setRole(role){
-  roleTabs.forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
+  document.querySelectorAll(".role-tab").forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
+  const cfg=(ROLES||[]).find(r=>r.name===role);
+  const closed=cfg&&cfg.open===false;
+  const form=document.getElementById("applicationForm"),cl=document.getElementById("roleClosed");
+  if(form) form.classList.toggle("is-closed",!!closed);
+  if(cl){cl.hidden=!closed;cl.textContent="";if(closed){cl.appendChild(el("h3",{text:role+" applications are closed"}));cl.appendChild(el("p",{text:cfg.note||"We're not taking applications for this role right now. Check back soon or ask in our Discord."}));}}
   if(roleField) roleField.value=role;
   if(subjectField) subjectField.value=`Mirage Productions application — ${role}`;
   const isWriter=role==="Script Writer";
@@ -444,8 +466,14 @@ function setRole(role){
   if(sub) sub.hidden=isWriter||isModerator;
   if(generalApplicationLabel) generalApplicationLabel.style.display=(isWriter||isModerator)?"none":"block";
 }
-roleTabs.forEach(btn=>btn.addEventListener("click",()=>setRole(btn.dataset.role)));
-if(roleTabs.length) setRole("Actor");
+const roleWrap=document.querySelector(".role-tabs");
+if(roleWrap) roleWrap.addEventListener("click",e=>{const b=e.target.closest(".role-tab");if(b) setRole(b.dataset.role);});
+function initRoles(){
+  const tabs=[...document.querySelectorAll(".role-tab")];
+  if(!tabs.length) return;
+  const first=tabs.find(t=>!t.classList.contains("closed"))||tabs[0];
+  setRole(first.dataset.role);
+}
 
 // Reveal effects only on elements that exist on the current page.
 const revealTargets=document.querySelectorAll(".section-head, .creator-card, .application-form, .info-card");
@@ -510,7 +538,7 @@ if("IntersectionObserver" in window){
   };
   form.addEventListener("input",e=>{if(e.target.tagName==="TEXTAREA") save();});
   window.clearApplicationDraft=()=>{try{localStorage.removeItem(KEY);}catch(_){} if(note)note.hidden=true; areas.forEach(t=>t._upd&&t._upd());};
-  try{
+  contentReady.then(()=>setTimeout(()=>{try{
     const d=JSON.parse(localStorage.getItem(KEY)||"null");
     if(d&&d.a){
       const tab=[...document.querySelectorAll(".role-tab")].find(x=>x.dataset.role===d.role);
@@ -518,7 +546,7 @@ if("IntersectionObserver" in window){
       Object.entries(d.a).forEach(([k,v])=>{const t=areas[+k.split("|")[1]];if(t&&t.name===k.split("|")[0]){t.value=v;t._upd&&t._upd();}});
       if(note)note.hidden=false;
     }
-  }catch(_){}
+  }catch(_){}},0));
 })();
 
 // Mark the current page in the nav and add a status summary on /status/

@@ -19,9 +19,9 @@
 </head>
 <body><div class="gradient-bg" aria-hidden="true"></div>
 <header class="topbar"><a class="brand" href="/"><span><b>Mirage</b><small>Productions</small></span></a><nav><a href="/">Home</a><a href="/forms/">Forms</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/support/">Support</a><a href="/legal/">Legal</a></nav><a class="discord" href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord →</a></header>
-<main><section class="status-page" style="padding-bottom:40px"><div class="status-hero"><span class="eyebrow">Mirage forms</span><h1>Join the Mirage Team</h1><p>Pick a role, tell us about yourself and send it in. Give accurate details so the team can review your application properly. Fields marked <span class="req">*</span> are required.</p></div></section><section id="forms" class="section apply-section">
+<main><section class="status-page" style="padding-bottom:40px"><div class="status-hero"><span class="eyebrow">Mirage forms</span><h1 data-c="forms.title">Join the Mirage Team</h1><p><span data-c="forms.text">Pick a role, tell us about yourself and send it in. Give accurate details so the team can review your application properly.</span> Fields marked <span class="req">*</span> are required.</p></div></section><section id="forms" class="section apply-section">
       <div class="section-head">
-        <div><span class="eyebrow">Applications</span><h2>Choose a role</h2></div>
+        <div><span class="eyebrow">Applications</span><h2 data-c="forms.rolesHeading">Choose a role</h2></div>
         
       </div>
       <div class="role-tabs"><button class="role-tab selected" data-role="Actor">Actor</button><button class="role-tab" data-role="Trusted">Trusted</button><button class="role-tab" data-role="Builder">Builder</button><button class="role-tab" data-role="Script Writer">Script Writer</button><button class="role-tab" data-role="Moderator">Moderator</button></div>
@@ -30,6 +30,7 @@
         <input type="hidden" name="Role" id="roleField" value="Actor">
 
         <p class="apply-as">Applying as <b id="applyAs">Actor</b><span class="draft" id="draftNote" hidden>Draft saved on this device</span></p>
+        <div class="role-closed" id="roleClosed" hidden></div>
         <div class="form-block">
           <h3 class="form-legend">About you</h3>
           <p class="form-sub">Reviewers use these to find and contact you. You must be 13 or older to apply.</p>
@@ -93,8 +94,8 @@
         </div>
         <div class="form-success" tabindex="-1" id="formSuccess">
           <div class="tick" aria-hidden="true">✓</div>
-          <h3>Application sent</h3>
-          <p>Thanks for applying to Mirage. The team will review it and get in touch on Discord or by email.</p>
+          <h3 data-c="forms.successTitle">Application sent</h3>
+          <p data-c="forms.successText">Thanks for applying to Mirage. The team will review it and get in touch on Discord or by email.</p>
           <button class="button secondary" type="button" id="sendAnother">Send another application</button>
         </div>
       </form>

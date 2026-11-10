@@ -340,3 +340,11 @@ footer small{grid-column:1/-1}
 .policy-nav a:hover{color:var(--cyan);border-color:rgba(101,234,255,.5)}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 .application-form .role-extra-fields{padding:0;border:0;background:none;margin:0;box-shadow:none}
+
+/* roles: closed state */
+.role-tab.closed{opacity:.75;border-style:dashed}
+.role-tab small{font-size:11px;opacity:.8;font-weight:500}
+.role-closed{padding:46px 28px;text-align:center;border-bottom:1px solid var(--line)}
+.role-closed h3{margin:0 0 8px;font-size:24px;letter-spacing:-.5px}
+.role-closed p{margin:0 auto;max-width:48ch;color:#a9c9d8;line-height:1.7}
+.application-form.is-closed .form-block,.application-form.is-closed .form-actions,.application-form.is-closed .apply-as{display:none}
