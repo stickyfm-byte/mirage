@@ -366,3 +366,31 @@ footer small{grid-column:1/-1}
 
 body.labels-on .eyebrow,body.labels-on .tag{display:inline-block!important}
 .intro-title{display:block;font:700 15px var(--display);color:var(--cyan);letter-spacing:-.2px}
+
+/* ===================== Support page ===================== */
+.support-page{padding:64px 0 96px}
+.support-hero{max-width:760px;margin-bottom:44px}
+.support-hero h1{font-size:clamp(44px,7vw,84px);line-height:.98;letter-spacing:-3px;margin:0 0 20px}
+.support-hero>p{font-size:18px;line-height:1.7;color:#a9c9d8;max-width:58ch;margin:0 0 28px}
+.support-actions{display:flex;gap:12px;flex-wrap:wrap}
+.support-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;margin-bottom:52px}
+.support-card{position:relative;padding:34px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(6,40,66,.88),rgba(3,26,46,.88))}
+.support-card h2{margin:0 0 12px;font-size:28px;letter-spacing:-.8px}
+.support-card h3{margin:26px 0 12px;font:700 15px var(--display);color:var(--cyan)}
+.support-card p{margin:0;color:#a9c9d8;line-height:1.75;max-width:60ch}
+.s-icon{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:20px;background:rgba(101,234,255,.1);border:1px solid rgba(101,234,255,.25);color:var(--cyan)}
+.s-icon svg,.c-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.support-card.safe{border-color:rgba(255,207,138,.35);background:linear-gradient(160deg,rgba(60,42,20,.5),rgba(3,26,46,.88))}
+.support-card.safe .s-icon{background:rgba(255,207,138,.12);border-color:rgba(255,207,138,.4);color:#ffcf8a}
+.tips{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tips li{display:flex;gap:12px;align-items:flex-start;color:#cfe6f0;line-height:1.55}
+.tips li:before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:50%;background:rgba(101,234,255,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2365eaff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center/12px no-repeat}
+.support-contact h2{font-size:28px;letter-spacing:-.8px;margin:0 0 18px}
+.contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:620px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{display:flex;gap:16px;align-items:center;padding:20px 22px;border-radius:14px;border:1px solid var(--line);background:rgba(3,29,50,.7);text-decoration:none;color:inherit;transition:border-color .2s,transform .2s,background .2s}
+.contact-card:hover{border-color:rgba(101,234,255,.5);background:rgba(6,40,66,.85);transform:translateY(-2px)}
+.contact-card b{display:block;font-size:15px}
+.contact-card small{display:block;margin-top:3px;color:#8daebe;font-size:13px;overflow-wrap:break-word}
+.c-icon{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(101,234,255,.1);color:var(--cyan)}
+@media(max-width:860px){.support-grid{grid-template-columns:1fr}.support-card{padding:26px}.support-page{padding:40px 0 70px}}

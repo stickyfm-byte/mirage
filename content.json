@@ -567,10 +567,19 @@
     "text": "For assistance with Mirage, submit a ticket through our official support portal. Our team will review your enquiry and respond through the support system.",
     "cardEyebrow": "Official support portal",
     "cardTitle": "Contact the Support Team",
-    "cardText": "Use the portal to submit a support ticket, report an issue, or request assistance. Please include a clear description of your enquiry and any relevant details.",
-    "securityNote": "Security reminder: Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.",
+    "cardText": "Use the portal to submit a support ticket, report an issue, or request assistance. Our team will reply through the support system.",
+    "securityNote": "Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.",
     "buttonLabel": "Open Support Portal ↗",
-    "buttonUrl": "https://support.miragesmp.org/"
+    "buttonUrl": "https://support.miragesmp.org/",
+    "securityTitle": "Stay safe",
+    "tipsTitle": "What to include",
+    "tips": [
+      "Your Minecraft username and Discord name",
+      "What happened, and when it happened",
+      "Screenshots or a short clip, if you have them"
+    ],
+    "contactsTitle": "Other ways to reach us",
+    "discordLabel": "Ask on Discord ↗"
   },
   "legal": {
     "title": "Legal & Policies",

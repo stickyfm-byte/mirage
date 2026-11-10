@@ -314,7 +314,7 @@ function normalise(c){
   c.forms.roles=(c.forms.roles||[]).map(r=>Object.assign({name:"",open:true,note:"",closesOn:"",color:"#5865F2",legend:"Your application",sub:"",introTitle:"",introText:"",questions:[]},r));
   c.forms.roles.forEach(r=>{r.questions=(r.questions||[]).map(q=>Object.assign({id:uid(),label:"",type:"text",required:false,placeholder:"",help:"",width:"full",maxLength:200,options:[]},q));});
   c.site.showLabels=!!c.site.showLabels;
-  c.support=Object.assign({eyebrow:"",title:"",text:"",cardEyebrow:"",cardTitle:"",cardText:"",securityNote:"",buttonLabel:"",buttonUrl:""},c.support);
+  c.support=Object.assign({eyebrow:"",title:"",text:"",cardEyebrow:"",cardTitle:"",cardText:"",securityTitle:"",securityNote:"",tipsTitle:"",tips:[],contactsTitle:"",discordLabel:"",buttonLabel:"",buttonUrl:""},c.support);
   c.legal=Object.assign({title:"",text:""},c.legal);
   return c;
 }
@@ -628,13 +628,22 @@ site:()=>`
 forms:formsView,
 
 support:()=>`
-<div class="card"><h2>Support page</h2>
+<div class="card"><h2>Top of the page</h2>
   <div class="grid2">${F("Small label","support.eyebrow")}${F("Page heading","support.title")}</div>
   ${F("Intro","support.text",{area:1,rows:3})}
-  <h3>Portal card</h3>
+  <div class="grid2">${F("Main button label","support.buttonLabel")}${F("Main button link","support.buttonUrl",{type:"url"})}</div>
+  ${F("Discord button label","support.discordLabel")}</div>
+<div class="card"><h2>Support portal card</h2>
   <div class="grid2">${F("Small label","support.cardEyebrow")}${F("Heading","support.cardTitle")}</div>
-  ${F("Text","support.cardText",{area:1,rows:3})}${F("Security reminder","support.securityNote",{area:1,rows:3})}
-  <div class="grid2">${F("Button label","support.buttonLabel")}${F("Button link","support.buttonUrl",{type:"url"})}</div></div>`,
+  ${F("Text","support.cardText",{area:1,rows:3})}
+  ${F("Checklist heading","support.tipsTitle")}
+  <h3>Checklist items</h3>
+  ${listHTML("support.tips",(t,i,p)=>`<label class="f"><span>Item</span><input type="text" data-bind="${p}" value="${esc(t)}"></label>`,"Item")}
+  <div class="addbar"><button class="btn" data-add="support.tips" data-tpl='""'>＋ Add item</button></div></div>
+<div class="card"><h2>Safety reminder</h2>
+  ${F("Heading","support.securityTitle")}${F("Message","support.securityNote",{area:1,rows:3})}</div>
+<div class="card"><h2>Contact cards</h2><p class="hint">The Discord link comes from "Banner & server" and the email cards come from "Footer & links", so you only change them in one place.</p>
+  ${F("Section heading","support.contactsTitle")}</div>`,
 
 legal:()=>`
 <div class="card"><h2>Legal page intro</h2><p class="hint">The policy documents themselves (Terms, Privacy and so on) are long legal text and are still edited in the page file.</p>

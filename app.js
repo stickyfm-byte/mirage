@@ -89,6 +89,27 @@ function applyContent(c){
     const sm=document.querySelector("footer small");
     if(sm && f.copyright){ sm.textContent=""; sm.append("© ",el("span",{id:"year",text:String(new Date().getFullYear())})," "+f.copyright); }
   }
+  // Support page: checklist + contact cards
+  const tips=document.getElementById("supportTips");
+  if(tips&&Array.isArray(c.support?.tips)){tips.textContent="";c.support.tips.filter(Boolean).forEach(t=>tips.appendChild(el("li",{text:t})));}
+  const sc=document.getElementById("supportContacts");
+  if(sc&&(c.footer?.emails||c.site?.discordUrl)){
+    const ICON={chat:'<svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>'};
+    const card=(href,icon,title,sub,ext)=>{
+      const a=el("a",{class:"contact-card",href:safeUrl(href)});
+      if(ext){a.target="_blank";a.rel="noopener noreferrer";}
+      const ic=el("span",{class:"c-icon"});ic.innerHTML=ICON[icon];
+      a.appendChild(ic);a.appendChild(el("span",{},[el("b",{text:title}),el("small",{text:sub})]));
+      return a;
+    };
+    const names={contact:"General enquiries",applications:"Applications",staff:"Staff",support:"Support"};
+    sc.textContent="";
+    sc.appendChild(card(c.site?.discordUrl||"https://discord.gg/mirageevents","chat","Discord","Chat with the community and staff",true));
+    (c.footer?.emails||[]).filter(Boolean).forEach(m=>{
+      const local=m.split("@")[0];
+      sc.appendChild(card("mailto:"+m,"mail",names[local.toLowerCase()]||local.charAt(0).toUpperCase()+local.slice(1),m,false));
+    });
+  }
   if(Array.isArray(c.forms?.roles) && c.forms.roles.some(r=>r.questions&&r.questions.length)) FORMS=Object.assign({},DEFAULT_FORMS,c.forms);
   if(Array.isArray(c.creators) && c.creators.length) creators=c.creators;
   if(Array.isArray(c.videos)){

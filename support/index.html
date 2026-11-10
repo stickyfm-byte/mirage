@@ -29,18 +29,45 @@
     <a class="discord" href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord ↗</a>
   </header>
   <main>
-    <section class="status-page">
-      <div class="status-hero">
+    <section class="status-page support-page">
+      <div class="support-hero">
         <span class="eyebrow" data-c="support.eyebrow">MIRAGE SUPPORT</span>
         <h1 data-c="support.title">How can we help?</h1>
         <p data-c="support.text">For assistance with Mirage, submit a ticket through our official support portal. Our team will review your enquiry and respond through the support system.</p>
+        <div class="support-actions">
+          <a class="button primary" data-c="support.buttonLabel" data-c-href="support.buttonUrl" href="https://support.miragesmp.org/" target="_blank" rel="noopener noreferrer">Open Support Portal ↗</a>
+          <a class="button secondary" data-c="support.discordLabel" href="https://discord.gg/mirageevents" target="_blank" rel="noopener noreferrer">Ask on Discord ↗</a>
+        </div>
       </div>
-      <div class="info-card">
-        <span class="eyebrow" data-c="support.cardEyebrow">OFFICIAL SUPPORT PORTAL</span>
-        <h2 data-c="support.cardTitle">Contact the Support Team</h2>
-        <p data-c="support.cardText">Use the portal to submit a support ticket, report an issue, or request assistance. Please include a clear description of your enquiry and any relevant details.</p>
-        <p data-c="support.securityNote"><strong>Security reminder:</strong> Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.</p>
-        <a class="button primary" data-c="support.buttonLabel" data-c-href="support.buttonUrl" href="https://support.miragesmp.org/" target="_blank" rel="noopener noreferrer">Open Support Portal ↗</a>
+
+      <div class="support-grid">
+        <article class="support-card main">
+          <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 1 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M14 5v14" stroke-dasharray="2 3"/></svg></div>
+          <span class="eyebrow" data-c="support.cardEyebrow">OFFICIAL SUPPORT PORTAL</span>
+          <h2 data-c="support.cardTitle">Contact the Support Team</h2>
+          <p data-c="support.cardText">Use the portal to submit a support ticket, report an issue, or request assistance. Our team will reply through the support system.</p>
+          <h3 data-c="support.tipsTitle">What to include</h3>
+          <ul class="tips" id="supportTips">
+            <li>Your Minecraft username and Discord name</li>
+            <li>What happened, and when it happened</li>
+            <li>Screenshots or a short clip, if you have them</li>
+          </ul>
+        </article>
+        <aside class="support-card safe">
+          <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h2 data-c="support.securityTitle">Stay safe</h2>
+          <p data-c="support.securityNote">Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.</p>
+        </aside>
+      </div>
+
+      <div class="support-contact">
+        <h2 data-c="support.contactsTitle">Other ways to reach us</h2>
+        <div class="contact-grid" id="supportContacts">
+          <a class="contact-card" href="https://discord.gg/mirageevents" target="_blank" rel="noopener noreferrer"><span class="c-icon"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><span><b>Discord</b><small>Chat with the community and staff</small></span></a>
+          <a class="contact-card" href="mailto:contact@miragesmp.org"><span class="c-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><b>General enquiries</b><small>contact@miragesmp.org</small></span></a>
+          <a class="contact-card" href="mailto:applications@miragesmp.org"><span class="c-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><b>Applications</b><small>applications@miragesmp.org</small></span></a>
+          <a class="contact-card" href="mailto:staff@miragesmp.org"><span class="c-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><b>Staff</b><small>staff@miragesmp.org</small></span></a>
+        </div>
       </div>
     </section>
   </main>
