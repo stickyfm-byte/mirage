@@ -170,6 +170,39 @@ select option{background:#06223a}
 .pvbody.phone iframe{width:390px;max-width:100%}
 .pvnote{font-size:11px;color:var(--dim);padding:8px 14px;border-top:1px solid var(--line)}
 
+/* application builder */
+input[type=date],input[type=color]{width:100%;background:var(--field);border:1px solid var(--line);border-radius:9px;padding:10px 12px;outline:none;color-scheme:dark}
+input[type=color]{padding:3px;height:42px;cursor:pointer}
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:rgba(1,13,24,.5);margin-bottom:18px;flex-wrap:wrap}
+.segb{border:0;background:none;border-radius:9px;padding:8px 16px;font-weight:600;color:var(--muted);cursor:pointer}
+.segb.on{background:rgba(101,234,255,.12);color:var(--cyan)}
+.appgrid{display:grid;grid-template-columns:270px minmax(0,1fr);gap:18px;align-items:start}
+.rolelist{display:flex;flex-direction:column;gap:8px}
+.rcard{display:grid;grid-template-columns:auto 1fr;column-gap:10px;text-align:left;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .15s}
+.rcard:hover{border-color:var(--line2)}
+.rcard.on{border-color:var(--cyan);background:var(--panel2)}
+.rcard .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;background:var(--ok)}
+.rcard .dot.bad{background:var(--bad)}
+.rcard .rn{font-weight:700}
+.rcard small{grid-column:2;color:var(--muted)}
+.note{border:1px solid rgba(255,123,123,.45);background:rgba(255,123,123,.08);border-radius:12px;padding:14px 18px;margin-bottom:18px}
+.note ul{margin:6px 0 0;padding-left:18px;color:#ffd0d0}
+.note.warn{border-color:rgba(241,199,108,.45);background:rgba(241,199,108,.07)}
+.meter{height:8px;border-radius:99px;background:#0a2236;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));border-radius:99px}
+.meter i.bad{background:var(--bad)}
+.q{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:rgba(1,13,24,.4);overflow:hidden}
+.q.open{border-color:var(--line2)}
+.qhead{display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}
+.qhead:hover{background:rgba(255,255,255,.03)}
+.qtype{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:rgba(101,234,255,.1);color:var(--cyan);flex:none}
+.qtitle{font-size:13.5px;font-weight:600;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qreq{font-size:11px;color:var(--sand);flex:none}
+.qbtns{display:flex;gap:4px;flex:none}
+.qbtns .ibtn{width:28px;height:28px}
+.qbody{padding:6px 16px 16px;border-top:1px solid var(--line)}
+.qbody>.f:first-child,.qbody>label.f:first-child{margin-top:14px}
+
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#06304f;border:1px solid var(--cyan);border-radius:10px;padding:12px 18px;font-weight:600;z-index:200;transition:.25s;max-width:92vw}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .toast.bad{border-color:var(--bad);background:#3a1010}
@@ -179,6 +212,7 @@ select option{background:#06223a}
   .app{grid-template-columns:248px minmax(0,1fr)!important}
 }
 @media(max-width:900px){
+  .appgrid{grid-template-columns:1fr}
   .app{grid-template-columns:1fr!important}
   .side{position:static;height:auto;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--line);gap:6px}
   .brand,.grp,.side-foot{display:none}
@@ -258,7 +292,8 @@ const ser=o=>JSON.stringify(o,null,2)+"\n";
 const ago=d=>{const s=(Date.now()-new Date(d))/1000;if(s<60)return"just now";if(s<3600)return Math.floor(s/60)+" min ago";if(s<86400)return Math.floor(s/3600)+" h ago";if(s<2592000){const d=Math.floor(s/86400);return d+(d===1?" day ago":" days ago")};return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})};
 
 /* ---------------- defaults ---------------- */
-const ROLE_NAMES=["Actor","Trusted","Builder","Script Writer","Moderator"];
+const uid=()=>"q"+Math.random().toString(36).slice(2,10);
+const CORE_DEFAULT=()=>[{key:"Minecraft Username",label:"Minecraft username",placeholder:"Your in-game name"},{key:"Email",label:"Email",placeholder:"you@example.com"},{key:"Discord",label:"Discord username",placeholder:"username"},{key:"Age",label:"Age",placeholder:"13 or older"}];
 function normalise(c){
   c=c||{};
   c.site=Object.assign({serverIp:"mc.miragesmp.org",discordUrl:"https://discord.gg/mirageevents"},c.site);
@@ -273,7 +308,12 @@ function normalise(c){
   c.eula=Object.assign({title:"",text:"",buttonLabel:"",url:""},c.eula);
   c.updates=Object.assign({title:"",text:"",items:[]},c.updates);
   c.footer=Object.assign({officialLinks:[],emails:[],copyright:""},c.footer);
-  c.forms=Object.assign({title:"",text:"",rolesHeading:"",successTitle:"",successText:"",roles:ROLE_NAMES.map(n=>({name:n,open:true,note:""}))},c.forms);
+  c.forms=Object.assign({title:"",text:"",rolesHeading:"",successTitle:"",successText:"",submitLabel:"Send application",privacyNote:"",minAge:13,roles:[]},c.forms);
+  c.forms.core=Object.assign({legend:"About you",sub:"",fields:[]},c.forms.core);
+  if(!c.forms.core.fields.length) c.forms.core.fields=CORE_DEFAULT();
+  c.forms.roles=(c.forms.roles||[]).map(r=>Object.assign({name:"",open:true,note:"",closesOn:"",color:"#5865F2",legend:"Your application",sub:"",introTitle:"",introText:"",questions:[]},r));
+  c.forms.roles.forEach(r=>{r.questions=(r.questions||[]).map(q=>Object.assign({id:uid(),label:"",type:"text",required:false,placeholder:"",help:"",width:"full",maxLength:200,options:[]},q));});
+  c.site.showLabels=!!c.site.showLabels;
   c.support=Object.assign({eyebrow:"",title:"",text:"",cardEyebrow:"",cardTitle:"",cardText:"",securityNote:"",buttonLabel:"",buttonUrl:""},c.support);
   c.legal=Object.assign({title:"",text:""},c.legal);
   return c;
@@ -299,6 +339,8 @@ async function loadContent(){
   }
 }
 async function publish(){
+  const v=validateForms();
+  if(v.errors.length){APP.sub="roles";APP.role=Math.max(0,v.errors[0].role||0);go("forms");toast("Fix the highlighted application problems first.",true);return}
   const btn=$("#publishBtn");btn.disabled=true;btn.textContent="Publishing…";
   try{
     const body={message:"Update site content via Mirage Access",content:b64(ser(S)),branch:CFG.branch};
@@ -316,7 +358,7 @@ async function publish(){
 }
 
 /* ---------------- state ---------------- */
-let pvTimer;
+let pvTimer,PV_ROLE="";
 function refreshState(){
   const dirty=ser(S)!==ORIG;
   const st=$("#state");st.textContent=dirty?"Unpublished changes":"Published";st.className="pill "+(dirty?"dirty":"clean");
@@ -333,13 +375,15 @@ const touch=()=>refreshState();
 function syncPreview(){
   if($("#pv").hidden)return;
   store.set("mirage-preview",JSON.stringify(S));
-  const f=$("#pvFrame");const u=$("#pvPage").value+"?preview=1&t="+Date.now();
-  f.src=u;
+  const f=$("#pvFrame"),page=$("#pvPage").value;
+  f.src=page+"?preview=1"+(page==="/forms/"&&PV_ROLE?"&role="+encodeURIComponent(PV_ROLE):"")+"&t="+Date.now();
 }
 $("#pvBtn").addEventListener("click",()=>{const p=$("#pv");p.hidden=!p.hidden;document.documentElement.style.setProperty("--pv",p.hidden?"0px":"minmax(380px,44vw)");$("#pvBtn").classList.toggle("on",!p.hidden);if(!p.hidden)syncPreview()});
 $("#pvClose").addEventListener("click",()=>$("#pvBtn").click());
 $("#pvReload").addEventListener("click",syncPreview);
-$("#pvPage").addEventListener("change",syncPreview);
+$("#pvPage").addEventListener("change",()=>{PV_ROLE="";syncPreview()});
+function previewRole(name){PV_ROLE=name;$("#pvPage").value="/forms/";if($("#pv").hidden)$("#pvBtn").click();else syncPreview()}
+window.rr=()=>render(true);
 $("#pvDevice").addEventListener("click",()=>{const b=$("#pvBody");b.classList.toggle("phone");$("#pvDevice").textContent=b.classList.contains("phone")?"Desktop":"Phone"});
 
 /* ---------------- builders ---------------- */
@@ -418,6 +462,105 @@ function render(keep){
   if(keep)window.scrollTo({top:y});refreshState();
 }
 
+
+/* ---------------- application builder ---------------- */
+let APP={sub:"roles",role:0,open:new Set()};
+const QTYPES={text:"Short answer",textarea:"Long answer",number:"Number",email:"Email",url:"Link",select:"Dropdown",radio:"Choose one",checkbox:"Choose many",yesno:"Yes / No"};
+const HAS_OPTS=t=>["select","radio","checkbox"].includes(t);
+const HAS_LEN=t=>["text","textarea","email","url"].includes(t);
+const newQ=(label,type="textarea",o={})=>Object.assign({id:uid(),label,type,required:true,placeholder:"",help:"",width:"full",maxLength:type==="textarea"?1000:200,options:[]},o);
+const TEMPLATES={
+ blank:{name:"Blank: one long answer",make:()=>[newQ("Application","textarea",{placeholder:"Tell us about yourself, your experience and your availability."}),newQ("Additional Information","textarea",{required:false,placeholder:"Anything else the team should know"})]},
+ staff:{name:"Staff role: availability and scenario",make:()=>[newQ("Timezone","text",{width:"half",maxLength:100}),newQ("Availability","text",{width:"half",maxLength:300}),newQ("Past experience","textarea"),newQ("Why do you want this role?","textarea"),newQ("Scenario: how would you handle a player breaking the rules?","textarea"),newQ("Additional Information","textarea",{required:false})]},
+ creative:{name:"Creative role: portfolio and experience",make:()=>[newQ("Portfolio link","url",{required:false,placeholder:"https://"}),newQ("Previous work and experience","textarea"),newQ("Why do you want to join Mirage?","textarea"),newQ("Additional Information","textarea",{required:false})]}
+};
+const COLORS=["#5865F2","#57F287","#FEE75C","#EB459E","#ED4245","#3BA9FF","#FFA24C"];
+function qSize(q){
+  if(HAS_LEN(q.type)) return Math.min(Number(q.maxLength)||(q.type==="textarea"?1000:200),1000);
+  if(q.type==="checkbox") return Math.min(q.options.join(", ").length,1000);
+  if(HAS_OPTS(q.type)) return Math.max(0,...q.options.map(o=>o.length));
+  return q.type==="yesno"?3:20;
+}
+function roleSize(r){
+  const core=S.forms.core.fields.reduce((n,f)=>n+f.key.length+(f.key==="Email"?200:f.key==="Age"?3:100),0);
+  return core+4+r.name.length+r.questions.reduce((n,q)=>n+q.label.length+qSize(q),0);
+}
+function validateForms(){
+  const errors=[],warns=[],names=new Set(),reserved=new Set(["Role",...S.forms.core.fields.map(f=>f.key)]);
+  S.forms.roles.forEach((r,ri)=>{
+    const n=r.name.trim(),rn=n||("Role "+(ri+1));
+    if(!n) errors.push({role:ri,msg:`Role ${ri+1} needs a name.`});
+    else if(names.has(n.toLowerCase())) errors.push({role:ri,msg:`"${rn}" is used for more than one role.`});
+    names.add(n.toLowerCase());
+    const seen=new Set();
+    r.questions.forEach((q,qi)=>{
+      const l=q.label.trim();
+      if(!l) errors.push({role:ri,msg:`${rn}: question ${qi+1} has no text.`});
+      else if(seen.has(l.toLowerCase())) errors.push({role:ri,msg:`${rn}: "${l}" appears twice.`});
+      else if(reserved.has(l)) errors.push({role:ri,msg:`${rn}: "${l}" is already a common question. Reword it.`});
+      seen.add(l.toLowerCase());
+      if(HAS_OPTS(q.type)&&q.options.length<2) errors.push({role:ri,msg:`${rn}: "${l||"question "+(qi+1)}" needs at least two options.`});
+    });
+    if(1+S.forms.core.fields.length+r.questions.length>40) errors.push({role:ri,msg:`${rn} has too many questions. The limit is 40 including the common ones.`});
+    if(roleSize(r)>12000) warns.push(`${rn}: if every answer was at its maximum length the application would be over 12,000 characters and be rejected. Lower some maximum lengths.`);
+    if(!r.questions.length) warns.push(`${rn} has no questions.`);
+  });
+  return {errors,warns};
+}
+const roleStatus=r=>!r.open?["bad","Closed"]:(r.closesOn&&new Date(r.closesOn+"T23:59:59")<new Date())?["bad","Auto-closed"]:["ok",r.closesOn?"Open until "+r.closesOn:"Open"];
+function qHTML(q,ri,qi){
+  const p=`forms.roles.${ri}.questions.${qi}`,open=APP.open.has(q.id);
+  const body=open?`<div class="qbody">
+    <label class="f"><span>Question</span><input type="text" data-bind="${p}.label" data-qlabel value="${esc(q.label)}"></label>
+    <div class="grid2"><label class="f"><span>Answer type</span><select data-bind="${p}.type" data-after="rr">${Object.entries(QTYPES).map(([k,l])=>`<option value="${k}" ${q.type===k?"selected":""}>${l}</option>`).join("")}</select></label>
+    <label class="f"><span>Width</span><select data-bind="${p}.width"><option value="full" ${q.width!=="half"?"selected":""}>Full width</option><option value="half" ${q.width==="half"?"selected":""}>Half width (pairs with the next half)</option></select></label></div>
+    ${SW("Required",p+".required")}<div style="height:14px"></div>
+    ${F("Help text under the question (optional)",p+".help")}
+    ${(q.type==="yesno"||q.type==="radio"||q.type==="checkbox")?"":F(q.type==="select"?"Prompt shown before choosing":"Placeholder",p+".placeholder")}
+    ${HAS_LEN(q.type)?F("Maximum characters",p+".maxLength",{type:"number"}):""}
+    ${HAS_OPTS(q.type)?`<label class="f"><span>Options (one per line, at least two)</span><textarea data-opts="${ri}.${qi}" rows="4">${esc(q.options.join("\n"))}</textarea></label>`:""}</div>`:"";
+  return `<div class="q ${open?"open":""}" data-qid="${q.id}"><div class="qhead" data-qt="${ri}.${qi}"><span class="qtype">${QTYPES[q.type]||q.type}</span><b class="qtitle">${esc(q.label||"(no question text)")}</b>${q.required?'<span class="qreq">required</span>':""}
+    <span class="qbtns"><button class="ibtn" data-qa="up" data-qi="${ri}.${qi}" aria-label="Move up">↑</button><button class="ibtn" data-qa="down" data-qi="${ri}.${qi}" aria-label="Move down">↓</button><button class="ibtn" data-qa="dup" data-qi="${ri}.${qi}" aria-label="Duplicate" title="Duplicate">⧉</button><button class="ibtn x" data-qa="del" data-qi="${ri}.${qi}" aria-label="Delete">✕</button></span></div>${body}</div>`;
+}
+function roleEditor(r,ri){
+  const p="forms.roles."+ri,size=roleSize(r);
+  return `<div class="card"><div class="item-head" style="margin-bottom:10px"><h2 style="margin:0 auto 0 0;font:800 19px var(--display)">${esc(r.name||"New role")}</h2>
+    <button class="btn sm" data-rpv="${esc(r.name)}">Preview</button><button class="ibtn" data-rmv="-1" aria-label="Move role up">↑</button><button class="ibtn" data-rmv="1" aria-label="Move role down">↓</button><button class="ibtn x" data-rdel="${ri}" aria-label="Delete role">✕</button></div>
+    <div class="grid2">${F("Role name",p+".name")}<div style="padding-top:24px">${SW("Accepting applications",p+".open")}</div>
+    ${F("Close automatically after (optional)",p+".closesOn",{type:"date"})}${F("Colour of the Discord message",p+".color",{type:"color"})}</div>
+    ${F("Message shown when closed (optional)",p+".note",{ph:"We're not taking applications for this role right now."})}
+    <h3>Heading and introduction</h3>
+    <div class="grid2">${F("Section heading",p+".legend")}${F("Intro title (optional)",p+".introTitle")}</div>
+    ${F("Subheading (optional)",p+".sub")}${F("Intro text (optional)",p+".introText",{area:1,rows:3})}</div>
+  <div class="card"><h2>Questions</h2><p class="hint">Applicants answer the common questions first, then these. The question text is also the heading reviewers see in Discord, so keep each one unique.</p>
+    <div class="meter"><i style="width:${Math.min(100,size/120)}%" class="${size>12000?"bad":""}"></i></div>
+    <p class="hint" style="margin:6px 0 16px">Largest possible application: ${size.toLocaleString()} of 12,000 characters. Real answers are usually much shorter. Long applications arrive as several Discord messages.</p>
+    ${r.questions.map((q,qi)=>qHTML(q,ri,qi)).join("")||`<div class="empty">No questions yet. Add one below.</div>`}
+    <div class="addbar" style="margin-top:14px"><select id="newQType" style="width:auto">${Object.entries(QTYPES).map(([k,l])=>`<option value="${k}" ${k==="textarea"?"selected":""}>${l}</option>`).join("")}</select><button class="btn primary" id="newQ">＋ Add question</button></div></div>`;
+}
+function rolesView(){
+  const roles=S.forms.roles;if(APP.role>=roles.length)APP.role=Math.max(0,roles.length-1);
+  const list=roles.map((x,i)=>{const[st,txt]=roleStatus(x);return `<button class="rcard ${i===APP.role?"on":""}" data-role="${i}"><span class="dot ${st}"></span><span class="rn">${esc(x.name||"(unnamed)")}</span><small>${x.questions.length} questions · ${esc(txt)}</small></button>`}).join("");
+  return `<div class="appgrid"><div><div class="rolelist">${list}</div>
+    <div class="card" style="margin-top:12px;padding:18px"><h3 style="margin-top:0">Add a role</h3><label class="f"><span>Start from</span><select id="newTpl">${Object.entries(TEMPLATES).map(([k,t])=>`<option value="${k}">${esc(t.name)}</option>`).join("")}${roles.map((x,i)=>`<option value="copy:${i}">Copy of ${esc(x.name||"role "+(i+1))}</option>`).join("")}</select></label>
+    <button class="btn primary" id="newRole" style="width:100%;justify-content:center">＋ Add role</button></div></div>
+    <div>${roles[APP.role]?roleEditor(roles[APP.role],APP.role):`<div class="empty">No roles yet. Add one on the left.</div>`}</div></div>`;
+}
+const coreView=()=>`<div class="card"><h2>Common questions</h2><p class="hint">Every applicant answers these first. Name, email, Discord and age are always included so reviewers can reach people. You can reword them.</p>
+  <div class="grid2">${F("Section heading","forms.core.legend")}${F("Minimum age","forms.minAge",{type:"number"})}</div>${F("Subheading","forms.core.sub",{area:1,rows:2})}
+  ${S.forms.core.fields.map((f,i)=>`<div class="item"><div class="item-head"><b>${esc(f.key)}</b></div><div class="grid2">${F("Question text","forms.core.fields."+i+".label")}${F("Placeholder","forms.core.fields."+i+".placeholder")}</div></div>`).join("")}</div>`;
+const pageView=()=>`<div class="card"><h2>Page and messages</h2>
+  ${F("Page heading","forms.title")}${F("Intro text","forms.text",{area:1,rows:3})}
+  <div class="grid2">${F("Heading above the role buttons","forms.rolesHeading")}${F("Send button label","forms.submitLabel")}</div>
+  ${F("Privacy note under the button","forms.privacyNote",{area:1,rows:2})}
+  <h3>After sending</h3>${F("Confirmation heading","forms.successTitle")}${F("Confirmation message","forms.successText",{area:1,rows:2})}</div>`;
+function formsView(){
+  const sub=APP.sub,v=validateForms();
+  const seg=`<div class="seg">${[["roles","Roles and questions"],["core","Common questions"],["page","Page and messages"]].map(([k,l])=>`<button class="segb ${k===sub?"on":""}" data-sub="${k}">${l}</button>`).join("")}</div>`;
+  const al=(v.errors.length?`<div class="note"><b>Fix before publishing</b><ul>${v.errors.map(e=>`<li>${esc(e.msg)}</li>`).join("")}</ul></div>`:"")+(v.warns.length?`<div class="note warn"><b>Heads up</b><ul style="color:#f3dfae">${v.warns.map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>`:"");
+  return seg+al+(sub==="roles"?rolesView():sub==="core"?coreView():pageView());
+}
+
 /* ---------------- views ---------------- */
 const stat=(n,l,k)=>`<button class="stat" data-goto="${k}"><b>${esc(n)}</b><span>${esc(l)}</span></button>`;
 const LV={ok:"Operational",warn:"Degraded",bad:"Down"};
@@ -448,6 +591,7 @@ home:()=>`
 <div class="card"><h2>Hero</h2><p class="hint">The intro at the top of the home page.</p>
   <div class="grid2">${F("Small tag above the title","hero.tag")}${F("Button label","hero.buttonLabel")}${F("Title line 1 (white)","hero.titleLine1")}${F("Title line 2 (blue, shimmering)","hero.titleLine2")}</div>
   ${F("Intro paragraph","hero.text",{area:1,rows:4})}</div>
+<div class="card"><h2>Small labels</h2><p class="hint">The small words above headings (like "Videos" or "Mirage support") are hidden on the site at the moment. Turn this on to show them.</p>${SW("Show small labels above headings","site.showLabels")}</div>
 <div class="card"><h2>Section headings</h2>
   <div class="grid2">${F("Videos: small label","sections.videosEyebrow")}${F("Videos: heading","sections.videosTitle")}${F("Creators: small label","sections.creatorsEyebrow")}${F("Creators: heading","sections.creatorsTitle")}</div></div>`,
 
@@ -481,15 +625,7 @@ site:()=>`
   ${SW("Show the banner","site.announcement.enabled")}<div style="height:16px"></div>
   ${F("Message","site.announcement.text")}<div class="grid2">${F("Link (optional)","site.announcement.link",{type:"url"})}${F("Link label","site.announcement.linkLabel",{ph:"Learn more ↗"})}</div></div>`,
 
-forms:()=>`
-<div class="card"><h2>Application page</h2>
-  ${F("Page heading","forms.title")}${F("Intro text","forms.text",{area:1,rows:3})}
-  <div class="grid2">${F("Heading above the role buttons","forms.rolesHeading")}${F("Confirmation heading","forms.successTitle")}</div>
-  ${F("Confirmation message","forms.successText",{area:1,rows:2})}</div>
-<div class="card"><h2>Roles</h2>
-  <p class="hint">Turn a role off to show "closed" instead of the form. New roles use the general application form. "Script Writer" and "Moderator" keep their own questions, so keep those names exactly.</p>
-  ${listHTML("forms.roles",(r,i,p)=>`<div class="grid2">${F("Role name",p+".name")}<div style="padding-top:24px">${SW("Accepting applications",p+".open")}</div></div>${F("Message when closed (optional)",p+".note",{ph:"We're not taking applications for this role right now."})}`,"Role")}
-  ${addBtn("forms.roles",{name:"",open:true,note:""},"Add role")}</div>`,
+forms:formsView,
 
 support:()=>`
 <div class="card"><h2>Support page</h2>
@@ -606,6 +742,49 @@ creators(p){
     const f=inp.files[0];if(!f)return;toast("Uploading…");
     try{const path=await uploadFile(f);set(S,inp.dataset.up,path);touch();render(true);toast("Uploaded")}catch(e){toast("Upload failed: "+e.message,true)}
   }));
+},
+forms(p){
+  p.querySelectorAll("[data-sub]").forEach(b=>b.addEventListener("click",()=>{APP.sub=b.dataset.sub;render()}));
+  p.querySelectorAll("[data-role]").forEach(b=>b.addEventListener("click",()=>{APP.role=+b.dataset.role;render()}));
+  const nr=$("#newRole");
+  if(nr) nr.addEventListener("click",()=>{
+    const v=$("#newTpl").value;let qs;
+    if(v.startsWith("copy:")){qs=JSON.parse(JSON.stringify(S.forms.roles[+v.slice(5)].questions)).map(q=>({...q,id:uid()}))}else qs=TEMPLATES[v].make();
+    const src=v.startsWith("copy:")?S.forms.roles[+v.slice(5)]:null;
+    S.forms.roles.push(Object.assign({name:"",open:true,note:"",closesOn:"",color:COLORS[S.forms.roles.length%COLORS.length],legend:"Your application",sub:"Tell us about yourself, your experience and your availability.",introTitle:"",introText:""},src?{legend:src.legend,sub:src.sub,introTitle:src.introTitle,introText:src.introText,color:src.color}:{},{questions:qs}));
+    APP.role=S.forms.roles.length-1;touch();render();
+    const n=document.querySelector('[data-bind$=".name"]');n&&n.focus();
+  });
+  p.querySelectorAll("[data-rpv]").forEach(b=>b.addEventListener("click",()=>previewRole(b.dataset.rpv)));
+  p.querySelectorAll("[data-rmv]").forEach(b=>b.addEventListener("click",()=>{
+    const i=APP.role,j=i+ +b.dataset.rmv,a=S.forms.roles;if(j<0||j>=a.length)return;
+    [a[i],a[j]]=[a[j],a[i]];APP.role=j;touch();render(true)}));
+  p.querySelectorAll("[data-rdel]").forEach(b=>b.addEventListener("click",()=>{
+    const r=S.forms.roles[+b.dataset.rdel];if(!confirm(`Delete the "${r.name||"unnamed"}" role and all its questions?`))return;
+    S.forms.roles.splice(+b.dataset.rdel,1);APP.role=Math.max(0,APP.role-1);touch();render()}));
+  p.querySelectorAll(".qhead").forEach(h=>h.addEventListener("click",e=>{
+    if(e.target.closest("[data-qa]"))return;
+    const [ri,qi]=h.dataset.qt.split(".").map(Number),id=S.forms.roles[ri].questions[qi].id;
+    APP.open.has(id)?APP.open.delete(id):APP.open.add(id);render(true)}));
+  p.querySelectorAll("[data-qa]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation();
+    const [ri,qi]=b.dataset.qi.split(".").map(Number),qs=S.forms.roles[ri].questions,a=b.dataset.qa;
+    if(a==="del"){if(!confirm("Delete this question?"))return;qs.splice(qi,1)}
+    if(a==="dup"){const c={...JSON.parse(JSON.stringify(qs[qi])),id:uid()};c.label+=" (copy)";qs.splice(qi+1,0,c);APP.open.add(c.id)}
+    if(a==="up"&&qi>0)[qs[qi-1],qs[qi]]=[qs[qi],qs[qi-1]];
+    if(a==="down"&&qi<qs.length-1)[qs[qi+1],qs[qi]]=[qs[qi],qs[qi+1]];
+    touch();render(true)}));
+  const nq=$("#newQ");
+  if(nq) nq.addEventListener("click",()=>{
+    const r=S.forms.roles[APP.role],t=$("#newQType").value;
+    const q=newQ("",t,{options:HAS_OPTS(t)?["Option 1","Option 2"]:[]});r.questions.push(q);APP.open.add(q.id);touch();render();
+    const el=document.querySelector(`[data-qid="${q.id}"] [data-qlabel]`);if(el){el.scrollIntoView({block:"center"});el.focus()}
+  });
+  p.querySelectorAll("[data-opts]").forEach(t=>t.addEventListener("input",()=>{
+    const [ri,qi]=t.dataset.opts.split(".").map(Number);
+    S.forms.roles[ri].questions[qi].options=t.value.split("\n").map(x=>x.trim()).filter(Boolean);touch()}));
+  p.querySelectorAll("[data-qlabel]").forEach(i=>i.addEventListener("input",()=>{
+    const t=i.closest(".q").querySelector(".qtitle");if(t)t.textContent=i.value||"(no question text)"}));
 },
 updates(){
   $("#newestUpdate").addEventListener("click",()=>{

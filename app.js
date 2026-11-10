@@ -18,18 +18,6 @@ function el(tag,props,kids){
   (kids||[]).forEach(c=>n.appendChild(c));
   return n;
 }
-let ROLES=null;
-function buildRoleTabs(roles){
-  ROLES=roles;
-  const wrap=document.querySelector(".role-tabs");
-  if(!wrap) return;
-  wrap.textContent="";
-  roles.forEach(r=>{
-    const b=el("button",{type:"button",class:"role-tab"+(r.open===false?" closed":""),"data-role":r.name,text:r.name});
-    if(r.open===false) b.appendChild(el("small",{text:" · Closed"}));
-    wrap.appendChild(b);
-  });
-}
 function applyContent(c){
   if(!c) return;
   document.querySelectorAll("[data-c]").forEach(n=>{
@@ -40,6 +28,7 @@ function applyContent(c){
     const v=getPath(c,n.dataset.cHref);
     if(typeof v==="string" && v) n.setAttribute("href",safeUrl(v));
   });
+  document.body.classList.toggle("labels-on",!!c.site?.showLabels);
   if(c.site?.serverIp) SERVER_IP=c.site.serverIp;
   if(c.site?.discordUrl) document.querySelectorAll('a[href^="https://discord.gg/"]').forEach(a=>a.setAttribute("href",safeUrl(c.site.discordUrl)));
   if(Number.isFinite(c.videoRail?.speed)) RAIL_SPEED=c.videoRail.speed;
@@ -100,7 +89,7 @@ function applyContent(c){
     const sm=document.querySelector("footer small");
     if(sm && f.copyright){ sm.textContent=""; sm.append("© ",el("span",{id:"year",text:String(new Date().getFullYear())})," "+f.copyright); }
   }
-  if(Array.isArray(c.forms?.roles) && c.forms.roles.length) buildRoleTabs(c.forms.roles);
+  if(Array.isArray(c.forms?.roles) && c.forms.roles.some(r=>r.questions&&r.questions.length)) FORMS=Object.assign({},DEFAULT_FORMS,c.forms);
   if(Array.isArray(c.creators) && c.creators.length) creators=c.creators;
   if(Array.isArray(c.videos)){
     const ids=c.videos.map(v=>typeof v==="string"?v:v.id).filter(Boolean);
@@ -428,51 +417,137 @@ contentReady.then(c=>{
   initRoles();
 });
 
-// Application role switching. This is safe on every page; controls only exist on /forms/.
-const roleField=document.getElementById("roleField");
+// ---------------------------------------------------------------------------
+// Application form: built from the definition in content.json (forms.*).
+// DEFAULT_FORMS is only used if content.json can't be loaded.
+// ---------------------------------------------------------------------------
+const DEFAULT_FORMS={"title": "Join the Mirage Team", "text": "Pick a role, tell us about yourself and send it in. Give accurate details so the team can review your application properly.", "rolesHeading": "Choose a role", "successTitle": "Application sent", "successText": "Thanks for applying to Mirage. The team will review it and get in touch on Discord or by email.", "roles": [{"name": "Actor", "open": true, "note": "", "closesOn": "", "color": "#5865F2", "legend": "Your application", "sub": "Tell us about yourself, your experience and your availability.", "introTitle": "", "introText": "", "questions": [{"id": "q31440510", "label": "Application", "type": "textarea", "required": true, "placeholder": "Tell us about yourself, your experience and your availability.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qd2364e7b", "label": "Additional Information", "type": "textarea", "required": false, "placeholder": "Anything else the team should know", "help": "", "width": "full", "maxLength": 1000, "options": []}]}, {"name": "Trusted", "open": true, "note": "", "closesOn": "", "color": "#57F287", "legend": "Your application", "sub": "Tell us about yourself, your experience and your availability.", "introTitle": "", "introText": "", "questions": [{"id": "qb4f11edb", "label": "Application", "type": "textarea", "required": true, "placeholder": "Tell us about yourself, your experience and your availability.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q7d68b3fc", "label": "Additional Information", "type": "textarea", "required": false, "placeholder": "Anything else the team should know", "help": "", "width": "full", "maxLength": 1000, "options": []}]}, {"name": "Builder", "open": true, "note": "", "closesOn": "", "color": "#FEE75C", "legend": "Your application", "sub": "Tell us about yourself, your experience and your availability.", "introTitle": "", "introText": "", "questions": [{"id": "qfb71dba6", "label": "Application", "type": "textarea", "required": true, "placeholder": "Tell us about yourself, your experience and your availability.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qcccb0820", "label": "Additional Information", "type": "textarea", "required": false, "placeholder": "Anything else the team should know", "help": "", "width": "full", "maxLength": 1000, "options": []}]}, {"name": "Script Writer", "open": true, "note": "", "closesOn": "", "color": "#EB459E", "legend": "Writing experience", "sub": "", "introTitle": "Script Writer", "introText": "Tell us about your writing experience, how you approach storytelling, and what you could bring to Mirage Events.", "questions": [{"id": "q9e1b6634", "label": "Timezone", "type": "text", "required": true, "placeholder": "e.g. GMT / BST", "help": "", "width": "half", "maxLength": 100, "options": []}, {"id": "qca2f6b61", "label": "Availability", "type": "text", "required": true, "placeholder": "e.g. 8–12 hours per week", "help": "", "width": "half", "maxLength": 300, "options": []}, {"id": "q8a39f996", "label": "Previous writing experience", "type": "textarea", "required": true, "placeholder": "Tell us about any scripts, stories, SMPs, events or other projects you have written for.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qd304bf9e", "label": "Portfolio / writing samples", "type": "textarea", "required": false, "placeholder": "Links to previous work, documents or videos (optional).", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qc6f35e1c", "label": "Why do you want to join Mirage as a Script Writer?", "type": "textarea", "required": true, "placeholder": "Tell us what interests you about writing for Mirage Events.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q91be0fe7", "label": "How would you build a storyline for a Minecraft event?", "type": "textarea", "required": true, "placeholder": "Explain how you would develop characters, conflict, pacing and a satisfying conclusion.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q36ebafda", "label": "Writing sample", "type": "textarea", "required": true, "placeholder": "Write a short scene for a Minecraft event. Include at least two characters and a clear source of tension or conflict.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qf2349ae4", "label": "Working with a team", "type": "textarea", "required": true, "placeholder": "How do you handle feedback, changes to your writing and working from someone else's plot or ideas?", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qac48faca", "label": "Additional Information", "type": "textarea", "required": false, "placeholder": "Anything else the team should know", "help": "", "width": "full", "maxLength": 1000, "options": []}]}, {"name": "Moderator", "open": true, "note": "", "closesOn": "", "color": "#ED4245", "legend": "Staff experience", "sub": "", "introTitle": "Moderator", "introText": "Tell us about your staff experience, judgement, and how you would help keep the Mirage community safe and welcoming. Previous staff experience is useful but not required.", "questions": [{"id": "qb6d58eaa", "label": "Timezone", "type": "text", "required": true, "placeholder": "e.g. GMT / BST", "help": "", "width": "half", "maxLength": 100, "options": []}, {"id": "q4a880045", "label": "Availability", "type": "text", "required": true, "placeholder": "e.g. evenings and weekends", "help": "", "width": "half", "maxLength": 300, "options": []}, {"id": "q2036f45c", "label": "Past staff experience", "type": "textarea", "required": true, "placeholder": "What servers or communities have you helped staff? Describe your role and responsibilities. If you have no past staff experience, explain that and share relevant skills.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "qd89bc101", "label": "Moderation experience and tools", "type": "textarea", "required": true, "placeholder": "Describe experience with reports, rule enforcement, tickets, logs or moderation bots, or how you would learn.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q80332f1b", "label": "Why do you want to be a Mirage Moderator?", "type": "textarea", "required": true, "placeholder": "What interests you about helping this community, and what strengths would you bring?", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q39db346b", "label": "Scenario: a player reports harassment, but you did not witness it. What would you do?", "type": "textarea", "required": true, "placeholder": "Explain how you would gather context, preserve evidence, protect privacy and decide whether to escalate.", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q95acdaf8", "label": "Handling conflict and staying fair", "type": "textarea", "required": true, "placeholder": "How would you respond if a friend broke a rule, or a player disagreed with a moderation decision?", "help": "", "width": "full", "maxLength": 1000, "options": []}, {"id": "q69eac53d", "label": "Additional Information", "type": "textarea", "required": false, "placeholder": "Anything else the team should know", "help": "", "width": "full", "maxLength": 1000, "options": []}]}], "submitLabel": "Send application", "privacyNote": "Your details go to the Mirage team and are shared with authorised reviewers in a private Discord channel.", "minAge": 13, "core": {"legend": "About you", "sub": "Reviewers use these to find and contact you. You must be 13 or older to apply.", "fields": [{"key": "Minecraft Username", "label": "Minecraft username", "placeholder": "Your in-game name"}, {"key": "Email", "label": "Email", "placeholder": "you@example.com"}, {"key": "Discord", "label": "Discord username", "placeholder": "username"}, {"key": "Age", "label": "Age", "placeholder": "13 or older"}]}};
+let FORMS=DEFAULT_FORMS;
+const isClosed=r=>r.open===false||(r.closesOn&&new Date(r.closesOn+"T23:59:59")<new Date());
 const subjectField=document.getElementById("subjectField");
-const scriptWriterFields=document.getElementById("scriptWriterFields");
-const moderatorFields=document.getElementById("moderatorFields");
-const generalApplication=document.getElementById("generalApplication");
-const generalApplicationLabel=document.getElementById("generalApplicationLabel");
-const scriptRequiredFields=scriptWriterFields ? scriptWriterFields.querySelectorAll("[data-script-required]") : [];
-const moderatorRequiredFields=moderatorFields ? moderatorFields.querySelectorAll("[data-moderator-required]") : [];
+let CURRENT_ROLE=null;
+function buildField(q,nameOverride){
+  const name=nameOverride||q.label;
+  const half=q.width==="half"?"half":"full";
+  const type=q.type||"text";
+  const star=()=>q.required?el("span",{class:"req",text:"*"}):el("em",{class:"opt",text:"optional"});
+  const help=()=>q.help?el("small",{class:"help",text:q.help}):null;
+  if(["radio","yesno","checkbox"].includes(type)){
+    const opts=type==="yesno"?["Yes","No"]:(q.options||[]);
+    const g=el("fieldset",{class:"fld-group "+half});
+    if(q.required) { g.dataset.required="1"; g.dataset.label=q.label; }
+    const lg=el("legend",{text:q.label});lg.appendChild(star());g.appendChild(lg);
+    const h=help();if(h) g.appendChild(h);
+    const list=el("div",{class:"choices"});
+    opts.forEach((o,i)=>{
+      const inp=el("input",{type:type==="checkbox"?"checkbox":"radio",name:name,value:o});
+      if(q.required&&type!=="checkbox"&&i===0) inp.required=true;
+      list.appendChild(el("label",{class:"choice"},[inp,el("span",{text:o})]));
+    });
+    g.appendChild(list);return g;
+  }
+  const L=el("label",{class:"fld "+half});
+  L.appendChild(document.createTextNode(q.label));L.appendChild(star());
+  let inp;
+  if(type==="textarea"){
+    inp=el("textarea",{name:name,rows:q.rows||5});
+  }else if(type==="select"){
+    inp=el("select",{name:name});
+    inp.appendChild(el("option",{value:"",text:q.placeholder||"Choose an option"}));
+    (q.options||[]).forEach(o=>inp.appendChild(el("option",{value:o,text:o})));
+  }else{
+    inp=el("input",{type:["email","url","number"].includes(type)?type:"text",name:name});
+    if(type==="number"){inp.setAttribute("inputmode","numeric");}
+    inp.setAttribute("autocomplete",type==="email"?"email":"off");
+  }
+  if(q.placeholder&&type!=="select") inp.setAttribute("placeholder",q.placeholder);
+  if(q.required) inp.required=true;
+  if(q.maxLength&&type!=="number"&&type!=="select") inp.setAttribute("maxlength",String(q.maxLength));
+  L.appendChild(inp);
+  const h=help();if(h) L.appendChild(h);
+  if(type==="textarea"){
+    const c=el("span",{class:"count","aria-hidden":"true"});L.appendChild(c);
+    const upd=()=>{c.textContent=q.maxLength?inp.value.length+" / "+q.maxLength:(inp.value.length?inp.value.length+" characters":"");};
+    inp.addEventListener("input",upd);upd();
+  }
+  return L;
+}
+function renderCore(){
+  const box=document.getElementById("coreBlock");
+  if(!box) return;
+  const core=FORMS.core||DEFAULT_FORMS.core;
+  box.textContent="";
+  box.appendChild(el("h3",{class:"form-legend",text:core.legend||"About you"}));
+  if(core.sub) box.appendChild(el("p",{class:"form-sub",text:core.sub}));
+  const grid=el("div",{class:"fld-grid"});
+  const types={Email:"email",Age:"number"};
+  (core.fields||[]).forEach(fd=>{
+    const fld=buildField({label:fd.label||fd.key,type:types[fd.key]||"text",required:true,placeholder:fd.placeholder||"",help:fd.help||"",width:"half",maxLength:fd.key==="Email"?200:100},fd.key);
+    if(fd.key==="Age"){const i=fld.querySelector("input");i.min=FORMS.minAge||13;i.max=99;}
+    grid.appendChild(fld);
+  });
+  box.appendChild(grid);
+}
+function renderRole(cfg){
+  const box=document.getElementById("roleBlock");
+  if(!box) return;
+  box.textContent="";
+  box.appendChild(el("h3",{class:"form-legend",text:cfg.legend||"Your application"}));
+  if(cfg.sub) box.appendChild(el("p",{class:"form-sub",text:cfg.sub}));
+  if(cfg.introTitle||cfg.introText){
+    const intro=el("div",{class:"role-intro"});
+    if(cfg.introTitle) intro.appendChild(el("strong",{class:"intro-title",text:cfg.introTitle}));
+    if(cfg.introText) intro.appendChild(el("p",{text:cfg.introText}));
+    box.appendChild(intro);
+  }
+  const grid=el("div",{class:"fld-grid"});
+  (cfg.questions||[]).forEach(q=>grid.appendChild(buildField(q)));
+  box.appendChild(grid);
+  restoreDraft(cfg.name);
+}
 function setRole(role){
+  CURRENT_ROLE=role;
   document.querySelectorAll(".role-tab").forEach(x=>x.classList.toggle("selected",x.dataset.role===role));
-  const cfg=(ROLES||[]).find(r=>r.name===role);
-  const closed=cfg&&cfg.open===false;
+  const cfg=(FORMS.roles||[]).find(r=>r.name===role)||(FORMS.roles||[])[0];
+  if(!cfg) return;
+  const closed=isClosed(cfg);
+  const roleField=document.getElementById("roleField");
+  if(roleField) roleField.value=cfg.name;
+  if(subjectField) subjectField.value="Mirage Productions application — "+cfg.name;
   const form=document.getElementById("applicationForm"),cl=document.getElementById("roleClosed");
   if(form) form.classList.toggle("is-closed",!!closed);
-  if(cl){cl.hidden=!closed;cl.textContent="";if(closed){cl.appendChild(el("h3",{text:role+" applications are closed"}));cl.appendChild(el("p",{text:cfg.note||"We're not taking applications for this role right now. Check back soon or ask in our Discord."}));}}
-  if(roleField) roleField.value=role;
-  if(subjectField) subjectField.value=`Mirage Productions application — ${role}`;
-  const isWriter=role==="Script Writer";
-  const isModerator=role==="Moderator";
-  if(scriptWriterFields) scriptWriterFields.hidden=!isWriter;
-  if(moderatorFields) moderatorFields.hidden=!isModerator;
-  scriptRequiredFields.forEach(field=>field.required=isWriter);
-  moderatorRequiredFields.forEach(field=>field.required=isModerator);
-  if(generalApplication) generalApplication.required=!isWriter&&!isModerator;
-  // Hidden role sections must not submit: Script Writer and Moderator share field names
-  // (Timezone, Availability), and the hidden copy would overwrite the visible answers.
-  [scriptWriterFields,moderatorFields].forEach(sec=>{
-    if(sec) sec.querySelectorAll("input,textarea,select").forEach(fld=>{fld.disabled=sec.hidden;});
-  });
+  if(cl){cl.hidden=!closed;cl.textContent="";if(closed){cl.appendChild(el("h3",{text:cfg.name+" applications are closed"}));cl.appendChild(el("p",{text:cfg.note||"We're not taking applications for this role right now. Check back soon or ask in our Discord."}));}}
   const applyAs=document.getElementById("applyAs");
-  if(applyAs) applyAs.textContent=role;
-  const legend=document.getElementById("roleLegend"),sub=document.getElementById("roleSub");
-  if(legend) legend.textContent=isWriter?"Writing experience":isModerator?"Staff experience":"Your application";
-  if(sub) sub.textContent=isWriter||isModerator?"":"Tell us about yourself, your experience and your availability.";
-  if(sub) sub.hidden=isWriter||isModerator;
-  if(generalApplicationLabel) generalApplicationLabel.style.display=(isWriter||isModerator)?"none":"block";
+  if(applyAs) applyAs.textContent=cfg.name;
+  if(!closed) renderRole(cfg); else {const rb=document.getElementById("roleBlock");if(rb) rb.textContent="";}
+  const sb=document.getElementById("submitBtn");
+  if(sb){sb.dataset.label=FORMS.submitLabel||"Send application";if(!sb.disabled) sb.textContent=sb.dataset.label;}
+  const pn=document.getElementById("privacyNote");
+  if(pn&&FORMS.privacyNote) pn.textContent=FORMS.privacyNote;
+}
+function buildRoleTabs(roles){
+  const wrap=document.querySelector(".role-tabs");
+  if(!wrap) return;
+  wrap.textContent="";
+  roles.forEach(r=>{
+    const closed=isClosed(r);
+    const b=el("button",{type:"button",class:"role-tab"+(closed?" closed":""),"data-role":r.name,text:r.name});
+    if(closed) b.appendChild(el("small",{text:" · Closed"}));
+    wrap.appendChild(b);
+  });
 }
 const roleWrap=document.querySelector(".role-tabs");
 if(roleWrap) roleWrap.addEventListener("click",e=>{const b=e.target.closest(".role-tab");if(b) setRole(b.dataset.role);});
 function initRoles(){
-  const tabs=[...document.querySelectorAll(".role-tab")];
-  if(!tabs.length) return;
-  const first=tabs.find(t=>!t.classList.contains("closed"))||tabs[0];
-  setRole(first.dataset.role);
+  if(!document.getElementById("applicationForm")) return;
+  if(!Array.isArray(FORMS.roles)||!FORMS.roles.length) FORMS=DEFAULT_FORMS;
+  buildRoleTabs(FORMS.roles);
+  renderCore();
+  const want=new URLSearchParams(location.search).get("role");
+  const d=readDraft();
+  const pick=[want,d&&d.role].map(n=>FORMS.roles.find(r=>r.name===n&&!isClosed(r))).find(Boolean)
+    ||(want&&FORMS.roles.find(r=>r.name===want))||FORMS.roles.find(r=>!isClosed(r))||FORMS.roles[0];
+  setRole(pick.name);
 }
 
 // Reveal effects only on elements that exist on the current page.
@@ -510,43 +585,37 @@ if("IntersectionObserver" in window){
 
 
 // ---------------------------------------------------------------------------
-// Forms: character counters + draft saving (answers only; never email/age/IDs)
+// Forms: draft saving (long answers only; never email, age or usernames)
 // ---------------------------------------------------------------------------
-(function formExtras(){
+const DRAFT_KEY="mirage-application-draft";
+function readDraft(){try{return JSON.parse(localStorage.getItem(DRAFT_KEY)||"null");}catch(_){return null;}}
+function restoreDraft(role){
+  const note=document.getElementById("draftNote");
+  const d=readDraft();
+  if(!d||d.role!==role||!d.a){if(note)note.hidden=true;return;}
+  document.querySelectorAll("#roleBlock textarea").forEach(t=>{
+    if(d.a[t.name]){t.value=d.a[t.name];t.dispatchEvent(new Event("input"));}
+  });
+  if(note)note.hidden=false;
+}
+(function draftSaver(){
   const form=document.getElementById("applicationForm");
   if(!form) return;
-  const KEY="mirage-application-draft";
-  const areas=[...form.querySelectorAll("textarea")];
-  areas.forEach(t=>{
-    const c=document.createElement("span");c.className="count";c.setAttribute("aria-hidden","true");
-    t.insertAdjacentElement("afterend",c);
-    const upd=()=>{c.textContent=t.value.length?t.value.length+" characters":"";};
-    t.addEventListener("input",upd);t._upd=upd;
-  });
   const note=document.getElementById("draftNote");
   let timer;
-  const save=()=>{
+  form.addEventListener("input",e=>{
+    if(e.target.tagName!=="TEXTAREA") return;
     clearTimeout(timer);
     timer=setTimeout(()=>{
       try{
-        const d={role:document.getElementById("roleField")?.value,a:{}};
-        areas.forEach(t=>{if(t.value.trim()) d.a[t.name+"|"+areas.indexOf(t)]=t.value;});
-        if(Object.keys(d.a).length){localStorage.setItem(KEY,JSON.stringify(d));if(note)note.hidden=false;}
-        else{localStorage.removeItem(KEY);if(note)note.hidden=true;}
+        const a={};
+        document.querySelectorAll("#roleBlock textarea").forEach(t=>{if(t.value.trim()) a[t.name]=t.value;});
+        if(Object.keys(a).length){localStorage.setItem(DRAFT_KEY,JSON.stringify({role:CURRENT_ROLE,a}));if(note)note.hidden=false;}
+        else{localStorage.removeItem(DRAFT_KEY);if(note)note.hidden=true;}
       }catch(_){}
     },500);
-  };
-  form.addEventListener("input",e=>{if(e.target.tagName==="TEXTAREA") save();});
-  window.clearApplicationDraft=()=>{try{localStorage.removeItem(KEY);}catch(_){} if(note)note.hidden=true; areas.forEach(t=>t._upd&&t._upd());};
-  contentReady.then(()=>setTimeout(()=>{try{
-    const d=JSON.parse(localStorage.getItem(KEY)||"null");
-    if(d&&d.a){
-      const tab=[...document.querySelectorAll(".role-tab")].find(x=>x.dataset.role===d.role);
-      if(tab) tab.click();
-      Object.entries(d.a).forEach(([k,v])=>{const t=areas[+k.split("|")[1]];if(t&&t.name===k.split("|")[0]){t.value=v;t._upd&&t._upd();}});
-      if(note)note.hidden=false;
-    }
-  }catch(_){}},0));
+  });
+  window.clearApplicationDraft=()=>{try{localStorage.removeItem(DRAFT_KEY);}catch(_){} if(note)note.hidden=true;};
 })();
 
 // Mark the current page in the nav and add a status summary on /status/

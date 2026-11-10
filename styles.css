@@ -348,3 +348,21 @@ footer small{grid-column:1/-1}
 .role-closed h3{margin:0 0 8px;font-size:24px;letter-spacing:-.5px}
 .role-closed p{margin:0 auto;max-width:48ch;color:#a9c9d8;line-height:1.7}
 .application-form.is-closed .form-block,.application-form.is-closed .form-actions,.application-form.is-closed .apply-as{display:none}
+
+/* application form: dynamic fields */
+.fld-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.fld-grid>.full{grid-column:1/-1}
+.application-form select{width:100%;margin-top:8px;padding:13px 14px;font-size:15px;border-radius:8px;background:rgba(1,14,26,.7);border:1px solid var(--line);color:inherit}
+.application-form select:focus{outline:0;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(101,234,255,.14)}
+.fld .help,.fld-group .help{display:block;margin-top:6px;font-size:12px;font-weight:400;color:#7fa2b3;line-height:1.5}
+.fld-group{border:0;padding:0;margin:0 0 18px;min-width:0}
+.fld-group legend{padding:0;font-size:13px;font-weight:600;color:#cfe6f0;margin-bottom:6px}
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.choice{display:flex!important;align-items:center;gap:9px;margin:0!important;padding:9px 14px;border:1px solid var(--line);border-radius:99px;background:rgba(1,14,26,.5);font-size:14px!important;font-weight:500!important;cursor:pointer;transition:border-color .15s,background .15s}
+.choice:hover{border-color:var(--line2,rgba(105,229,255,.3))}
+.choice input{width:auto!important;margin:0!important;padding:0!important;accent-color:#0b70a6}
+.choice:has(input:checked){border-color:var(--cyan);background:rgba(101,234,255,.1)}
+@media(max-width:620px){.fld-grid{grid-template-columns:1fr}}
+
+body.labels-on .eyebrow,body.labels-on .tag{display:inline-block!important}
+.intro-title{display:block;font:700 15px var(--display);color:var(--cyan);letter-spacing:-.2px}

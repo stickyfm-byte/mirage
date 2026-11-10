@@ -31,66 +31,12 @@
 
         <p class="apply-as">Applying as <b id="applyAs">Actor</b><span class="draft" id="draftNote" hidden>Draft saved on this device</span></p>
         <div class="role-closed" id="roleClosed" hidden></div>
-        <div class="form-block">
-          <h3 class="form-legend">About you</h3>
-          <p class="form-sub">Reviewers use these to find and contact you. You must be 13 or older to apply.</p>
-          <div class="form-grid">
-            <label>Minecraft username<span class="req">*</span><input name="Minecraft Username" required autocomplete="off" placeholder="Your in-game name"></label>
-            <label>Email<span class="req">*</span><input type="email" name="Email" required autocomplete="email" placeholder="you@example.com"></label>
-            <label>Discord username<span class="req">*</span><input name="Discord" required autocomplete="off" placeholder="username"></label>
-            <label>Age<span class="req">*</span><input type="number" name="Age" min="13" max="99" required inputmode="numeric" placeholder="13 or older"></label>
-          </div>
-        </div>
-        <div class="form-block">
-          <h3 class="form-legend" id="roleLegend">Your application</h3>
-          <p class="form-sub" id="roleSub">Tell us about yourself, your experience and your availability.</p>
-
-        <div id="scriptWriterFields" class="role-extra-fields" hidden>
-          <div class="role-intro">
-            <span class="eyebrow">Script Writer</span>
-            <p>Tell us about your writing experience, how you approach storytelling, and what you could bring to Mirage Events.</p>
-          </div>
-
-          <div class="form-grid">
-            <label>Timezone<input name="Timezone" data-script-required placeholder="e.g. GMT / BST"></label>
-            <label>Availability<input name="Availability" data-script-required placeholder="e.g. 8–12 hours per week"></label>
-          </div>
-
-          <label>Previous writing experience<textarea name="Writing Experience" data-script-required rows="5" placeholder="Tell us about any scripts, stories, SMPs, events or other projects you have written for."></textarea></label>
-
-          <label>Portfolio / writing samples<em class="opt">optional</em><textarea name="Portfolio" rows="3" placeholder="Links to previous work, documents or videos (optional)."></textarea></label>
-
-          <label>Why do you want to join Mirage as a Script Writer?<textarea name="Why Script Writer" data-script-required rows="5" placeholder="Tell us what interests you about writing for Mirage Events."></textarea></label>
-
-          <label>How would you build a storyline for a Minecraft event?<textarea name="Story Approach" data-script-required rows="5" placeholder="Explain how you would develop characters, conflict, pacing and a satisfying conclusion."></textarea></label>
-
-          <label>Writing sample<textarea name="Writing Sample" data-script-required rows="8" placeholder="Write a short scene for a Minecraft event. Include at least two characters and a clear source of tension or conflict."></textarea></label>
-
-          <label>Working with a team<textarea name="Teamwork" data-script-required rows="4" placeholder="How do you handle feedback, changes to your writing and working from someone else's plot or ideas?"></textarea></label>
-        </div>
-
-        <div id="moderatorFields" class="role-extra-fields" hidden>
-          <div class="role-intro">
-            <span class="eyebrow">Moderator</span>
-            <p>Tell us about your staff experience, judgement, and how you would help keep the Mirage community safe and welcoming. Previous staff experience is useful but not required.</p>
-          </div>
-          <div class="form-grid">
-            <label>Timezone<input name="Timezone" data-moderator-required placeholder="e.g. GMT / BST"></label>
-            <label>Availability<input name="Availability" data-moderator-required placeholder="e.g. evenings and weekends"></label>
-          </div>
-          <label>Past staff experience<textarea name="Past Staff Experience" data-moderator-required rows="5" placeholder="What servers or communities have you helped staff? Describe your role and responsibilities. If you have no past staff experience, explain that and share relevant skills."></textarea></label>
-          <label>Moderation experience and tools<textarea name="Moderation Experience" data-moderator-required rows="4" placeholder="Describe experience with reports, rule enforcement, tickets, logs or moderation botsor how you would learn."></textarea></label>
-          <label>Why do you want to be a Mirage Moderator?<textarea name="Why Moderator" data-moderator-required rows="5" placeholder="What interests you about helping this community, and what strengths would you bring?"></textarea></label>
-          <label>Scenario: a player reports harassment, but you did not witness it. What would you do?<textarea name="Scenario Response" data-moderator-required rows="5" placeholder="Explain how you would gather context, preserve evidence, protect privacy and decide whether to escalate."></textarea></label>
-          <label>Handling conflict and staying fair<textarea name="Conflict Handling" data-moderator-required rows="5" placeholder="How would you respond if a friend broke a rule, or a player disagreed with a moderation decision?"></textarea></label>
-        </div>
-        <label id="generalApplicationLabel">Application<textarea name="Application" id="generalApplication" rows="6" required placeholder="Tell us about yourself, your experience and your availability."></textarea></label>
-        <label>Additional information<em class="opt">optional</em><textarea name="Additional Information" rows="4" placeholder="Anything else the team should know"></textarea></label>
-        </div>
+        <div class="form-block" id="coreBlock"></div>
+        <div class="form-block" id="roleBlock"></div>
         <div class="form-actions">
           <p id="applicationStatus" role="status" aria-live="polite"></p>
-          <button class="button primary" type="submit">Send application</button>
-          <small>Your details go to the Mirage team and are shared with authorised reviewers in a private Discord channel. See our <a href="/legal/#privacy">Privacy Policy</a>.</small>
+          <button class="button primary" type="submit" id="submitBtn" data-label="Send application">Send application</button>
+          <small><span id="privacyNote" data-c="forms.privacyNote">Your details go to the Mirage team and are shared with authorised reviewers in a private Discord channel.</span> See our <a href="/legal/#privacy">Privacy Policy</a>.</small>
         </div>
         <div class="form-success" tabindex="-1" id="formSuccess">
           <div class="tick" aria-hidden="true">✓</div>
@@ -113,7 +59,11 @@
       status.className = "";
       status.textContent = "Sending your application…";
       try {
-        const data = Object.fromEntries(new FormData(form).entries());
+        // Merge repeated names (checkbox groups) into one comma-separated answer.
+        const data = {};
+        for (const [k, v] of new FormData(form).entries()) data[k] = k in data ? data[k] + ", " + v : v;
+        const missing = [...form.querySelectorAll("fieldset[data-required]")].find(g => !g.querySelector("input:checked"));
+        if (missing) { missing.scrollIntoView({ block: "center" }); throw new Error("Please choose at least one option for \u201c" + missing.dataset.label + "\u201d."); }
         const response = await fetch("https://mirage-applications-api.soobiem13.workers.dev/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +83,7 @@
         status.textContent = (error.message || "We couldn't send your application.") + " Your answers are still here, so you can try again.";
       } finally {
         button.disabled = false;
-        button.textContent = "Send application";
+        button.textContent = button.dataset.label || "Send application";
       }
     });
     const again = document.getElementById("sendAnother");
