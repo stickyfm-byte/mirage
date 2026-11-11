@@ -211,6 +211,9 @@
     "rolesHeading": "Choose a role",
     "successTitle": "Application sent",
     "successText": "Thanks for applying to Mirage. The team will review it and get in touch on Discord or by email.",
+    "submitLabel": "Send application",
+    "privacyNote": "Your details go to the Mirage team and are shared with authorised reviewers in a private Discord channel.",
+    "minAge": 13,
     "roles": [
       {
         "name": "Actor",
@@ -531,9 +534,6 @@
         ]
       }
     ],
-    "submitLabel": "Send application",
-    "privacyNote": "Your details go to the Mirage team and are shared with authorised reviewers in a private Discord channel.",
-    "minAge": 13,
     "core": {
       "legend": "About you",
       "sub": "Reviewers use these to find and contact you. You must be 13 or older to apply.",
@@ -565,13 +565,11 @@
     "eyebrow": "Mirage support",
     "title": "How can we help?",
     "text": "For assistance with Mirage, submit a ticket through our official support portal. Our team will review your enquiry and respond through the support system.",
-    "cardEyebrow": "Official support portal",
+    "cardEyebrow": "Official Support Portal",
     "cardTitle": "Contact the Support Team",
     "cardText": "Use the portal to submit a support ticket, report an issue, or request assistance. Our team will reply through the support system.",
-    "securityNote": "Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.",
-    "buttonLabel": "Open Support Portal ↗",
-    "buttonUrl": "https://support.miragesmp.org/",
     "securityTitle": "Stay safe",
+    "securityNote": "Never share your password, verification codes, API keys, or account recovery details. Mirage staff will never ask for your password.",
     "tipsTitle": "What to include",
     "tips": [
       "Your Minecraft username and Discord name",
@@ -579,7 +577,9 @@
       "Screenshots or a short clip, if you have them"
     ],
     "contactsTitle": "Other ways to reach us",
-    "discordLabel": "Ask on Discord ↗"
+    "discordLabel": "Ask on Discord ↗",
+    "buttonLabel": "Open Support Portal ↗",
+    "buttonUrl": "https://support.miragesmp.org/"
   },
   "legal": {
     "title": "Legal & Policies",
