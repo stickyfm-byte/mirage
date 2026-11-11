@@ -3,9 +3,9 @@
     "serverIp": "mc.miragesmp.org",
     "discordUrl": "https://discord.gg/mirageevents",
     "announcement": {
-      "enabled": false,
-      "text": "",
-      "link": "",
+      "enabled": true,
+      "text": "Today, 11th November, marks Remembrance Day. We honour and remember all those who served and sacrificed their lives. Lest We Forget.",
+      "link": "https://www.bbc.co.uk/newsround/articles/cn51g5dw35no",
       "linkLabel": ""
     },
     "showLabels": false
@@ -92,7 +92,7 @@
       "head": "assets/ykni-head.png",
       "profile": "https://namemc.com/profile/ykni.8",
       "yt": "https://www.youtube.com/@yknimc",
-      "role": "Minecraft creator"
+      "role": "Minecraft Creator"
     },
     {
       "name": "NaltRexo",
@@ -101,7 +101,7 @@
       "head": "",
       "profile": "https://namemc.com/profile/NaltRexo.2",
       "yt": "https://www.youtube.com/@naltrexi",
-      "role": "Minecraft creator"
+      "role": "Minecraft Creator"
     },
     {
       "name": "Kingstxn__",
@@ -110,7 +110,7 @@
       "head": "",
       "profile": "https://namemc.com/profile/Kingstxn__.1",
       "yt": "https://www.youtube.com/@Kingston_isGud",
-      "role": "Minecraft creator"
+      "role": "Minecraft Creator"
     }
   ],
   "status": {
