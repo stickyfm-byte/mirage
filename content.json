@@ -178,23 +178,27 @@
   "footer": {
     "officialLinks": [
       {
-        "label": "Website",
+        "label": "Official Mirage Website",
         "url": "https://miragesmp.org/"
       },
       {
-        "label": "Discord",
+        "label": "Official Mirage Discord",
         "url": "https://discord.gg/mirageevents"
       },
       {
-        "label": "ykni",
+        "label": "Official Mirage Support",
+        "url": "https://support.miragesmp.org"
+      },
+      {
+        "label": "Ykni CC",
         "url": "https://www.youtube.com/@yknimc"
       },
       {
-        "label": "Nalt",
+        "label": "Nalt CC",
         "url": "https://www.youtube.com/@naltrexi"
       },
       {
-        "label": "Kingston",
+        "label": "Kingston CC",
         "url": "https://www.youtube.com/@Kingston_isGud"
       }
     ],
