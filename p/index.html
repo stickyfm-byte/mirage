@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#031827">
+  <title>Mirage Productions</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://miragesmp.org/p/">
+  <link rel="icon" href="../assets/mirage-m.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="/assets/consent.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>.cv-wrap{width:min(1200px,94vw);margin:34px auto 70px}.cv-stage{position:relative;transform-origin:0 0}.cv-stage .blk{position:absolute}.cv-stage .bt{width:100%;height:100%;white-space:pre-wrap;overflow-wrap:anywhere}.cv-empty{padding:90px 0;text-align:center;color:#a9c9d8}</style>
+</head>
+<body>
+  <div class="gradient-bg" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/"><span><b>Mirage</b><small>Productions</small></span></a>
+    <nav><a href="/">Home</a><a href="/info/">About</a><a href="/forms/">Forms</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/support/" >Support</a><a href="/legal/">Legal</a></nav>
+    <a class="discord" href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord ↗</a>
+  </header>
+  <main><div class="cv-wrap" id="cvWrap"><div class="cv-stage" id="cvStage"></div></div></main>
+<footer>
+    <div class="footer-brand"><img src="../assets/Untitled612_20261101132623-removebg-preview.png" alt="Mirage SMP"></div></div>
+    <div class="footer-actions"><a href="/">Home</a><a href="/forms/">Forms</a><a href="/info/">About</a><a href="/status/">Status</a><a href="/updates/">Updates</a><a href="/support/">Support</a><a href="/legal/">Legal &amp; Policies</a><a href="/legal/#privacy" data-cookie-settings>Cookie settings</a></div>
+    <div class="official-links"><b>Official Links</b><a href="https://miragesmp.org/" target="_blank" rel="noopener">Website</a><a href="https://discord.gg/mirageevents" target="_blank" rel="noopener">Discord</a><a href="https://www.youtube.com/@yknimc" target="_blank" rel="noopener">ykni</a><a href="https://www.youtube.com/@naltrexi" target="_blank" rel="noopener">Nalt</a><a href="https://www.youtube.com/@Kingston_isGud" target="_blank" rel="noopener">Kingston</a></div>
+    <div class="official-emails"><b>Contact</b><a href="mailto:contact@miragesmp.org">contact@miragesmp.org</a><a href="mailto:applications@miragesmp.org">applications@miragesmp.org</a><a href="mailto:staff@miragesmp.org">staff@miragesmp.org</a></div>
+    <small>© <span id="year"></span> Mirage Productions. Minecraft is a trademark of Mojang Studios.</small>
+  </footer>
+  <script src="../app.js"></script>
+<script>
+(async()=>{
+  const q=new URLSearchParams(location.search),wrap=document.getElementById("cvWrap"),st=document.getElementById("cvStage");
+  let c=null;
+  try{if(q.get("preview"))c=JSON.parse(localStorage.getItem("mirage-preview"));}catch(e){}
+  if(!c){try{c=await (await fetch("../content.json",{cache:"no-store"})).json();}catch(e){}}
+  const pg=((c&&c.canvas&&c.canvas.pages)||[]).find(p=>p.id===q.get("id"));
+  if(!pg){wrap.innerHTML='<p class="cv-empty">This page could not be found.</p>';return;}
+  document.title=pg.name+" — Mirage Productions";
+  st.style.width=pg.w+"px";st.style.height=pg.h+"px";if(pg.bg)st.style.background=pg.bg;
+  pg.blocks.slice().sort((a,b)=>(a.z||0)-(b.z||0)).forEach(b=>{
+    const e=document.createElement("div");e.className="blk";const s=e.style;
+    s.left=b.x+"px";s.top=b.y+"px";s.width=b.w+"px";s.height=b.h+"px";s.zIndex=b.z||1;s.opacity=b.op==null?1:b.op;s.borderRadius=(b.r||0)+"px";
+    if(b.t==="img"){const i=document.createElement("img");i.src=b.src;i.alt="";i.style.cssText="width:100%;height:100%;display:block;border-radius:inherit;object-fit:"+(b.fit||"cover");e.appendChild(i);}
+    else{if(b.bg)s.background=b.bg;if(b.t==="text"){const t=document.createElement("div");t.className="bt";t.textContent=b.text;Object.assign(t.style,{fontFamily:'"'+b.font+'",sans-serif',fontSize:b.size+"px",fontWeight:b.weight,color:b.color,textAlign:b.align,lineHeight:1.25});e.appendChild(t);}}
+    st.appendChild(e);
+  });
+  const fit=()=>{const k=Math.min(1,wrap.clientWidth/pg.w);st.style.transform="scale("+k+")";wrap.style.height=pg.h*k+"px";};
+  fit();addEventListener("resize",fit);
+})();
+</script>
+</body>
+</html>

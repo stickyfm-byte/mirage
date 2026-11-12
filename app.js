@@ -33,15 +33,27 @@ function applyContent(c){
   if(c.site?.discordUrl) document.querySelectorAll('a[href^="https://discord.gg/"]').forEach(a=>a.setAttribute("href",safeUrl(c.site.discordUrl)));
   if(Number.isFinite(c.videoRail?.speed)) RAIL_SPEED=c.videoRail.speed;
 
-  // Announcement banner (homepage only)
-  const bar=document.getElementById("announceBar");
-  const an=c.site?.announcement;
-  if(bar && an?.enabled && an.text){
-    bar.textContent="";
-    bar.appendChild(el("span",{text:an.text}));
-    if(an.link) bar.appendChild(el("a",{href:safeUrl(an.link),target:"_blank",rel:"noopener",text:an.linkLabel||"Learn more ↗"}));
-    bar.hidden=false;
-  }
+  // Alert banners (every page). Uses c.banners[]; falls back to the old single announcement.
+  (function(){
+    let list=Array.isArray(c.banners)?c.banners.slice():[];
+    const an=c.site?.announcement;
+    if(!list.length&&an?.enabled&&an.text) list=[{id:"legacy",enabled:true,level:"info",text:an.text,link:an.link,linkLabel:an.linkLabel}];
+    const now=Date.now();
+    const live=b=>{if(!b||!b.enabled||!b.text)return false;const s=b.start&&Date.parse(b.start),e=b.end&&Date.parse(b.end);return !(s&&now<s)&&!(e&&now>e);};
+    let wrap=document.getElementById("alertStack");
+    if(!wrap){wrap=el("div",{id:"alertStack",class:"alert-stack"});document.body.prepend(wrap);}
+    wrap.textContent="";
+    list.filter(live).forEach(b=>{
+      const key="mirage-dismiss-"+(b.id||"x")+"-"+b.text.length;
+      let gone=false;try{gone=b.dismissible&&localStorage.getItem(key);}catch(_){}
+      if(gone)return;
+      const lv=["info","success","warn","critical"].includes(b.level)?b.level:"info";
+      const bar=el("div",{class:"alert-bar lv-"+lv,role:lv==="critical"?"alert":"status"},[el("span",{text:b.text})]);
+      if(b.link)bar.appendChild(el("a",{href:safeUrl(b.link),target:"_blank",rel:"noopener",text:b.linkLabel||"Learn more ↗"}));
+      if(b.dismissible){const x=el("button",{class:"alert-x",type:"button","aria-label":"Dismiss",text:"✕"});x.addEventListener("click",()=>{try{localStorage.setItem(key,"1");}catch(_){}bar.remove();});bar.appendChild(x);}
+      wrap.appendChild(bar);
+    });
+  })();
 
   // Disclaimer paragraphs
   const dis=document.getElementById("disclaimerBody");
@@ -572,7 +584,7 @@ function initRoles(){
 }
 
 // Reveal effects only on elements that exist on the current page.
-const revealTargets=document.querySelectorAll(".section-head, .creator-card, .application-form, .info-card");
+const revealTargets=document.querySelectorAll(".section-head, .creator-card, .application-form, .info-card, .info-reveal");
 if("IntersectionObserver" in window){
   const revealer=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
@@ -658,4 +670,32 @@ function restoreDraft(role){
     s.innerHTML='<span class="status-dot'+(bad?" bad":warn?" warn":"")+'"></span><b>'+(bad?"Some systems are down":warn?"Some systems have issues":"All systems operational")+"</b>";
     list.insertAdjacentElement("beforebegin",s);
   });
+})();
+
+
+// ---------------------------------------------------------------------------
+// Navbar: mobile menu button + "scrolled" state
+// ---------------------------------------------------------------------------
+(function navbar(){
+  const bar=document.querySelector(".topbar");
+  const nav=bar&&bar.querySelector("nav");
+  if(!bar||!nav) return;
+  nav.id=nav.id||"siteNav";
+  const btn=document.createElement("button");
+  btn.type="button";btn.className="nav-toggle";
+  btn.setAttribute("aria-label","Open menu");btn.setAttribute("aria-expanded","false");btn.setAttribute("aria-controls",nav.id);
+  btn.innerHTML="<span></span><span></span><span></span>";
+  bar.appendChild(btn);
+  const set=open=>{
+    bar.classList.toggle("nav-open",open);
+    btn.setAttribute("aria-expanded",String(open));
+    btn.setAttribute("aria-label",open?"Close menu":"Open menu");
+  };
+  btn.addEventListener("click",e=>{e.stopPropagation();set(!bar.classList.contains("nav-open"));});
+  nav.addEventListener("click",e=>{if(e.target.closest("a"))set(false);});
+  document.addEventListener("click",e=>{if(!bar.contains(e.target))set(false);});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")set(false);});
+  window.addEventListener("resize",()=>{if(innerWidth>860)set(false);});
+  const onScroll=()=>bar.classList.toggle("is-scrolled",scrollY>12);
+  onScroll();addEventListener("scroll",onScroll,{passive:true});
 })();
