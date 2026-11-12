@@ -3,7 +3,7 @@
     "serverIp": "mc.miragesmp.org",
     "discordUrl": "https://discord.gg/mirageevents",
     "announcement": {
-      "enabled": true,
+      "enabled": false,
       "text": "Today, 11th November, marks Remembrance Day. We honour and remember all those who served and sacrificed their lives. Lest We Forget.",
       "link": "https://www.bbc.co.uk/newsround/articles/cn51g5dw35no",
       "linkLabel": ""
